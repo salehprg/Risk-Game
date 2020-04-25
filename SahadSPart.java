@@ -1,6 +1,4 @@
 
-package sahad.s.part;
-
 /**
  *
  * @author sajad cj
