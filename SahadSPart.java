@@ -13,9 +13,9 @@ public class SahadSPart {
     public static void main(String[] args) {
         boolean saleh_aghel_ast = false;
         if(saleh_aghel_ast)
-            System.out.println("saleh pesar khobi ast");
+            System.out.println("Sajjad pesar khobi ast");
         else 
-            System.out.println("saleh koskhole");
+            System.out.println("Sajjad koskhole");
         
     }
     
