@@ -1,6 +1,5 @@
-
 package myrbg;
-
+//در این کلاس اطلاعات بازیکن پیاده شده است
 public class PlayerManager {
 
     private int PlayerID ;
