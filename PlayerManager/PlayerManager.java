@@ -2,80 +2,36 @@ package PlayerManager;
 //در این کلاس اطلاعات بازیکن پیاده شده است
 public class PlayerManager {
 
-    private int PlayerID ;
-    private String PlayerName ;
-    private int PlayerColor ;
-    private int CountriesCount ;
-    private int UnimployedSoldiersCount ;
-    private boolean IsActive ;
-    private int Status ;
+    Player players[];
     
     
-   public PlayerManager(int PlayerID, String PlayerName, int PlayerColor, int CountriesCount )
-   {
-       setPlayerID(PlayerID);
-       setPlayerName(PlayerName);
-       setPlayerColor(PlayerColor);
-       setCountriesCount(CountriesCount);
-       setUnimployedSoldiersCount(0);
-       setIsActive(false);
-   }
+    public PlayerManager(Player _Players[])
+    {
+        setPlayers(_Players);
+    }
+    
+    /**
+        * @param players the players to set
+        */
+    public void setPlayers(Player[] players) {
+        this.players = players;
+    }
    
-   
-    public void setPlayerID(int PlayerID) {
-        this.PlayerID = PlayerID;
-    }
+    /**
+     * @return the players
+     */
+    public Player getPlayer(int id) {
+        Player result = null;
 
-    public void setPlayerName(String PlayerName) {
-        this.PlayerName = PlayerName;
-    }
+        for(int i = 0 ; i < players.length; i++)
+        {
+            if(players[i].getPlayerID() == id)
+            {
+                result = players[i];
+            }
+        }
 
-    public void setPlayerColor(int PlayerColor) {
-        this.PlayerColor = PlayerColor;
-    }
-
-    public void setCountriesCount(int CountriesCount) {
-        this.CountriesCount = CountriesCount;
-    }
-
-    public void setUnimployedSoldiersCount(int UnimployedSoldiersCount) {
-        this.UnimployedSoldiersCount = UnimployedSoldiersCount;
-    }
-
-    public void setIsActive(boolean IsActive) {
-        this.IsActive = IsActive;
-    }
-
-    public void setStatus(int Status) {
-        this.Status = Status;
-    }
-
-    public int getPlayerID() {
-        return PlayerID;
-    }
-
-    public String getPlayerName() {
-        return PlayerName;
-    }
-
-    public int getPlayerColor() {
-        return PlayerColor;
-    }
-
-    public int getCountriesCount() {
-        return CountriesCount;
-    }
-
-    public int getUnimployedSoldiersCount() {
-        return UnimployedSoldiersCount;
-    }
-
-    public boolean isIsActive() {
-        return IsActive;
-    }
-
-    public int getStatus() {
-        return Status;
+        return result;
     }
     
     

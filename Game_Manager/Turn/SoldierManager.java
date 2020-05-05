@@ -5,16 +5,20 @@ import Map.*;
 
 public class SoldierManager {
 
-    void GiveSoldierToPlayer(Player _Player)
+    public void GiveSoldierToPlayer(Player _Player)
     {
-        _Player.UnimployedSoldiersCount += SoldiersByContinent(_Player) + SoldiersByCountries(_Player);
+        _Player.setUnimployedSoldiersCount(SoldiersByContinent(_Player) + SoldiersByCountries(_Player));
+        
     }
 
+    public void Initialize()
+    {
 
+    }
 
     int SoldiersByCountries(Player _Player)
     {
-        return _Player.CountriesCount / 3;
+        return _Player.getCountriesCount() / 3;
     }
 
     int SoldiersByContinent(Player _Player)
@@ -31,7 +35,7 @@ public class SoldierManager {
             Continent CurrentContinent = _continents[i];
             for(int j = 0; j < CurrentContinent.CountriesID.length; j++)
             {
-                if(Map.getCountry(CurrentContinent.CountriesID[j]).ownerID != _Player.ID)
+                if(Map.getCountry(CurrentContinent.CountriesID[j]).ownerID != _Player.getPlayerID())
                 {
                     HaveContinent = false;
                     break;
