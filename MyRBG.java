@@ -1,18 +1,24 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 import Game_Manager.*;
 import PlayerManager.Player;
 
 public class MyRBG {
 
     public static void main(String[] args) {
-<<<<<<< HEAD
-        Player players[] = new Player[4];
+        List<Player> players = new ArrayList<Player>();
+        
+        Player player1 = new Player(0, "PlayerName", 0, 0);
+
+        players.add(player1);
 
         GameManager gameManager = new GameManager(players);
         
         gameManager.InitializeGame();
-=======
-        //Test
->>>>>>> 643eb65df0890c0ace517fe814d6197cd550db7b
     }
     
 }

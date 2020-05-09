@@ -1,11 +1,14 @@
 package PlayerManager;
+
+import java.util.List;
+
 //در این کلاس اطلاعات بازیکن پیاده شده است
 public class PlayerManager {
 
-    Player players[];
+    List<Player> players;
     
     
-    public PlayerManager(Player _Players[])
+    public PlayerManager(List<Player> _Players)
     {
         setPlayers(_Players);
     }
@@ -13,7 +16,7 @@ public class PlayerManager {
     /**
         * @param players the players to set
         */
-    public void setPlayers(Player[] players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
    
@@ -21,18 +24,16 @@ public class PlayerManager {
      * @return the players
      */
     public Player getPlayer(int id) {
-        Player result = null;
+        return players.get(id);
+    }
 
-        for(int i = 0 ; i < players.length; i++)
-        {
-            if(players[i].getPlayerID() == id)
-            {
-                result = players[i];
-            }
-        }
-
-        return result;
+    public int getPlayerLastIndex()
+    {
+        return players.size() - 1;
     }
     
-    
+    public void GiveSoldierToPlayer()
+    {
+        
+    }
 }

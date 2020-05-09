@@ -6,10 +6,10 @@ package Map;
 
 public class Map {
     
-    public static Continent continents[];
-    public static Country countries[];
+    public Continent continents[];
+    public Country countries[];
     
-    public static Country getCountry(int countryId)
+    public Country getCountry(int countryId)
     {
         for(int i = 0; i< countries.length; i++)
         {

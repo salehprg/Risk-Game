@@ -13,7 +13,7 @@ public class SoldierManager {
 
     public void Initialize()
     {
-
+        
     }
 
     int SoldiersByCountries(Player _Player)
