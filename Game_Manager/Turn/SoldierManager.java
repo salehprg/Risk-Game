@@ -35,7 +35,7 @@ public class SoldierManager {
             Continent CurrentContinent = _continents[i];
             for(int j = 0; j < CurrentContinent.CountriesID.length; j++)
             {
-                if(Map.getCountry(CurrentContinent.CountriesID[j]).ownerID != _Player.getPlayerID())
+                if(Map.getCountry(CurrentContinent.CountriesID[j]).GetOwnerId() != _Player.getPlayerID())
                 {
                     HaveContinent = false;
                     break;
