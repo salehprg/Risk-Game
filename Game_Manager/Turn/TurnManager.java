@@ -3,6 +3,7 @@ package Game_Manager.Turn;
 import java.util.List;
 
 import Game_Manager.GameManager;
+import Game_Manager.GameManager.State;
 import Map.Country;
 import Map.Map;
 import PlayerManager.*;
@@ -10,38 +11,23 @@ import PlayerManager.*;
 public class TurnManager {
     Player CurrentPlayer;
     PlayerManager playerManager;
-    Map mapManager;
     
-    enum State
-    {
-        DeploySoldier,
-        Move,
-        War
-    }
-
-    State CurrentState;
     
     Country FirstCountrySelected , SecondCountrySelected;
 
 
     public TurnManager(List<Player> player , Map _Map)
     {
-        playerManager = new PlayerManager(player);
-        mapManager = _Map;
-    }
+        playerManager = new PlayerManager(player);    }
 
     public Player getCurrentPlayer()
     {
         return CurrentPlayer;
     }
 
+
     public boolean DeploySoldier(Country _Country , int SoldierCount)
     {
-        if(CurrentState != State.DeploySoldier)
-        {
-            return false;
-        }
-
         int CurrentPlayerId = CurrentPlayer.getPlayerID();
 
         if(CurrentPlayerId == _Country.GetOwnerId())
@@ -57,6 +43,9 @@ public class TurnManager {
         }
     }
 
+
+//#region Move
+
     public boolean CheckConnection(Country _FromCountry , Country _ToCountry)
     {
         _FromCountry.SetChecked(true);
@@ -64,7 +53,7 @@ public class TurnManager {
         
         for(int i = 0;i < Neighbors.length; i++)
         {
-            Country CurrentCountry = mapManager.getCountry(Neighbors[i]);
+            Country CurrentCountry = Map.getCountry(Neighbors[i]);
 
             if(Neighbors[i] == _ToCountry.GetCountryID())
             {
@@ -83,15 +72,15 @@ public class TurnManager {
         return false;
     }
 
-    public boolean Move(Country FromCountry , Country ToCountry)
+    public boolean Move()
     {
-        if(FromCountry.GetOwnerId() != CurrentPlayer.getPlayerID() || ToCountry.GetOwnerId() != CurrentPlayer.getPlayerID())
+        if(FirstCountrySelected.GetOwnerId() != CurrentPlayer.getPlayerID() || SecondCountrySelected.GetOwnerId() != CurrentPlayer.getPlayerID())
         {
             return false;
         }
         else
         {
-            return CheckConnection(FromCountry, ToCountry);
+            return CheckConnection(FirstCountrySelected, SecondCountrySelected);
         }
     }
 
@@ -125,9 +114,11 @@ public class TurnManager {
         }
     }
 
-    public void NextPlayer()
+//#endregion
+
+    public void NextTurn(GameManager _GameManager)
     {
-        int CurrentId = CurrentPlayer.getPlayerID();
+        int CurrentId = (CurrentPlayer != null ? CurrentPlayer.getPlayerID() : -1);
 
         if(CurrentId + 1 > playerManager.getPlayerLastIndex())
         {
@@ -138,6 +129,19 @@ public class TurnManager {
             CurrentPlayer = playerManager.getPlayer(CurrentId + 1);
         }
 
+        _GameManager.ChangeState(State.DeploySoldier);
+    }
+
+
+
+
+
+    public Country getFirstCountrySelected() {
+        return FirstCountrySelected;
+    }
+
+    public Country getSecondCountrySelected() {
+        return SecondCountrySelected;
     }
 
 

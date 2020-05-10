@@ -11,6 +11,37 @@ public class SoldierManager {
         
     }
 
+    public void MoveSoldier(int _SoldierToMove , TurnManager turnManager)
+    {
+        int SoldierOnFirstCountry = turnManager.getFirstCountrySelected().GetSoldierCount();
+        int SoldierOnSecondCountry = turnManager.getSecondCountrySelected().GetSoldierCount();
+
+        turnManager.getFirstCountrySelected().SetSoldierCount(SoldierOnFirstCountry - _SoldierToMove);
+        turnManager.getSecondCountrySelected().SetSoldierCount(SoldierOnSecondCountry + _SoldierToMove);
+    }
+
+    public boolean DeploySoldier(int SoldierCount , Country ToCountry , TurnManager turnManager)
+    {
+        int UnEmployeedSoldier = turnManager.getCurrentPlayer().getUnimployedSoldiersCount();
+
+        if(UnEmployeedSoldier >= SoldierCount)
+        {
+            if(turnManager.DeploySoldier(ToCountry, SoldierCount))
+            {
+                turnManager.getCurrentPlayer().setUnimployedSoldiersCount(UnEmployeedSoldier - SoldierCount);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public void Initialize()
     {
         
