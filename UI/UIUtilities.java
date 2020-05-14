@@ -1,7 +1,7 @@
 package UI;
 
 public class UIUtilities {
-    
+
     public void OpenInputSoldierWarDialog()
     {
 
@@ -10,6 +10,11 @@ public class UIUtilities {
     public void OpenWarDialog()
     {
 
+    }
+
+    public void OpenInputSoldierDeployDialog()
+    {
+        
     }
 
     public void OpenMoveDialog()

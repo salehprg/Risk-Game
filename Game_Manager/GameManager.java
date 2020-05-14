@@ -6,6 +6,7 @@ import Game_Manager.Turn.*;
 import Map.Country;
 import Map.Map;
 import PlayerManager.Player;
+import UI.UIUtilities;
 
 public class GameManager {
 
@@ -14,6 +15,7 @@ public class GameManager {
     public Map mapManger;
     public TurnManager turnManager;
     public Move move;
+    UIUtilities uiUtilities;
 
     public enum State
     {
@@ -31,6 +33,7 @@ public class GameManager {
         mapManger = new Map();
         turnManager = new TurnManager(players , mapManger);
         move = new Move();
+        uiUtilities = new UIUtilities();
     }
 
     public void InitializeGame()
