@@ -14,7 +14,7 @@ public class UIUtilities {
 
     public void OpenInputSoldierDeployDialog()
     {
-        
+
     }
 
     public void OpenMoveDialog()
