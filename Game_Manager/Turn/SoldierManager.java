@@ -26,8 +26,9 @@ public class SoldierManager {
 
         if(UnEmployeedSoldier >= SoldierCount)
         {
-            if(turnManager.DeploySoldier(ToCountry, SoldierCount))
+            if(turnManager.CheckDeploy(ToCountry))
             {
+                ToCountry.AddSoldier(SoldierCount);
                 turnManager.getCurrentPlayer().setUnimployedSoldiersCount(UnEmployeedSoldier - SoldierCount);
                 return true;
             }

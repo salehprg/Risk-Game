@@ -36,9 +36,15 @@ public class Country
         {
             SoldierCount = _SoldierCount;
         }
+
+
         public void AddSoldier(int _SoldierCount)
         {
             SoldierCount += _SoldierCount;
+        }
+        public void RemoveSoldier(int _SoldierCount)
+        {
+            SoldierCount -= _SoldierCount;
         }
 
 

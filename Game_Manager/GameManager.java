@@ -44,7 +44,10 @@ public class GameManager {
 
     public void ChangeState(State _State)
     {
-        CurrentState = _State;
+        if(turnManager.getCurrentPlayer().getUnimployedSoldiersCount() == 0)
+        {
+            CurrentState = _State;
+        }
     }
 
     public void CountryUIClick(Country _Country)
@@ -68,6 +71,7 @@ public class GameManager {
             case Move:
 
                 //Open Dialog For Input Soldier To Move
+
                 int SoldierToMove = 0;
 
                 if(turnManager.getFirstCountrySelected() == null || turnManager.getSecondCountrySelected() == null)
@@ -77,9 +81,10 @@ public class GameManager {
 
                 if(turnManager.getSecondCountrySelected() != null)
                 {
-                    if(turnManager.Move())
+                    if(turnManager.CheckMove())
                     {
                         soldierManager.MoveSoldier(SoldierToMove , turnManager);
+                        turnManager.ClearSelectedCountry();
                     }
                 }
 
@@ -87,7 +92,24 @@ public class GameManager {
                 
             case War:
 
-                
+                if(turnManager.getFirstCountrySelected() == null || turnManager.getSecondCountrySelected() == null)
+                {
+                    turnManager.SetCountrySelected(_Country);
+                }
+
+                if(turnManager.getSecondCountrySelected() != null)
+                {
+                    if(turnManager.CheckWar())
+                    {
+                        int AttackerSoldier = warManger.DoWar(turnManager);
+                        if(AttackerSoldier > 0)  // It Means Attacker Win
+                        {
+                            soldierManager.MoveSoldier(AttackerSoldier, turnManager);
+                            turnManager.AddDefenderCountryToAttackerCountry();
+                        }
+                    }
+                }
+
                 break;
         }
     }
