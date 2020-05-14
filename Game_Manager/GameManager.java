@@ -33,6 +33,7 @@ public class GameManager {
         mapManger = new Map();
         turnManager = new TurnManager(players , mapManger);
         move = new Move();
+        
         uiUtilities = new UIUtilities();
     }
 
