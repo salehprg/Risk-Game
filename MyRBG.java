@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import Game_Manager.*;
 import PlayerManager.Player;
+import UI.UICreator;
 
 public class MyRBG {
 
@@ -14,9 +15,14 @@ public class MyRBG {
         players.add(player1);
         players.add(player2);
 
+
         GameManager gameManager = new GameManager(players);
-        
         gameManager.InitializeGame();
+
+        UICreator uiCreator = new UICreator(gameManager);
+        uiCreator.Initialize();
+
+        
 
     }
 }
