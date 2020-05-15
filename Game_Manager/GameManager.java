@@ -39,7 +39,6 @@ public class GameManager {
 
     public void InitializeGame()
     {
-        Map.Initialize();
         soldierManager.Initialize();
         turnManager.NextTurn(this);
     }
