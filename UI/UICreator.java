@@ -35,26 +35,25 @@ public class UICreator {
     {
         JFrame frame= new JFrame("Risk Game");
 
-        // frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-        // frame.setUndecorated(true);
-        // frame.setVisible(true);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        frame.setUndecorated(true);
+        frame.setVisible(true);
 
-        frame.setSize(1000, 600);   
+        //frame.setSize(800, 600);   
+        
 
         int ScreenWidth = frame.getBounds().width;
         int ScreenHeight = frame.getBounds().height;
 
         JButton BoardGameBtn = CreateBoardImage(ScreenWidth, ScreenHeight);
-        //frame.add(BoardGameBtn);
 
         JPanel panel = CreateCountryUI(ScreenWidth, ScreenHeight);
 
         panel.add(BoardGameBtn , null);
         
-        //frame.add(BoardGameBtn);
         JLabel labelMp = new JLabel();
         labelMp.setText("Test");
-        labelMp.setBounds(0 , 0 , 100 , 10);
+        labelMp.setBounds(ScreenWidth + 50 , ScreenHeight / 2  , 100 , 10);
 
         BoardGameBtn.addMouseMotionListener(new MouseInputAdapter() {
             @Override
@@ -63,7 +62,8 @@ public class UICreator {
             }
         });
 
-        panel.add(labelMp);
+        frame.add(labelMp);
+
         frame.add(panel);
 
         frame.setLayout(null);    
@@ -78,7 +78,7 @@ public class UICreator {
         int ImageWidth = Width;
         int ImageHeight = Height;
 
-        ImageIcon BoardGameIcon = new ImageIcon(AppPath + "\\UI\\Images\\BoardGame\\BoardGame.png");
+        ImageIcon BoardGameIcon = new ImageIcon(AppPath + "\\UI\\Images\\BoardGame\\BoardGame.jpg");
 
         JButton BoardGame = new JButton(new ImageIcon(BoardGameIcon.getImage().getScaledInstance(ImageWidth, ImageHeight ,java.awt.Image.SCALE_SMOOTH)));
         BoardGame.setBounds(0 , 0 , ImageWidth, ImageHeight);
@@ -91,8 +91,8 @@ public class UICreator {
 
     JPanel CreateCountryUI(int _Width , int _Height)
     {
-        int RefrenceX  = 600;
-        int RefrenceY  = 400;
+        int RefrenceX  = 800;
+        int RefrenceY  = 600;
 
         int[][] CountryBound = Data.CountryBound;
         String[] CountryName = Data.CountryName;
@@ -105,12 +105,12 @@ public class UICreator {
         
         for(int i = 0; i < CountryBound.length; i++)
         {
-            JButton CountryButton = new JButton();
+            JButton CountryButton = new JButton(String.valueOf(i));
             
             CountryButton.setActionCommand(String.valueOf(i));
 
             CountryButton.setName(CountryName[i]);
-            CountryButton.setBounds(_Width * CountryBound[i][0] / RefrenceX ,_Height * CountryBound[i][1] / RefrenceY , 20 , 20);
+            CountryButton.setBounds(_Width * CountryBound[i][0] / RefrenceX - 15 ,_Height * CountryBound[i][1] / RefrenceY , 50 , 20);
 
             CountryButton.setContentAreaFilled(false);
             CountryButton.setBorderPainted(true);
