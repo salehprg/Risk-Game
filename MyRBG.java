@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import Game_Manager.*;
 import PlayerManager.Player;
+import UI.Data;
 import UI.UICreator;
 
 public class MyRBG {
@@ -22,7 +23,9 @@ public class MyRBG {
         UICreator uiCreator = new UICreator(gameManager);
         uiCreator.Initialize();
 
-        
+        System.out.println(Data.NeighbourId[0][1]);
+        System.out.println(Data.NeighbourId[0][2]);
+        System.out.println(Data.NeighbourId[0][3]);
 
     }
 }

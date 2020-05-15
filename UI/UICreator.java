@@ -39,30 +39,31 @@ public class UICreator {
         frame.setUndecorated(true);
         frame.setVisible(true);
 
-        //frame.setSize(800, 600);   
+        //frame.setSize(1000, 600);   
         
-
+        
         int ScreenWidth = frame.getBounds().width;
         int ScreenHeight = frame.getBounds().height;
 
-        JButton BoardGameBtn = CreateBoardImage(ScreenWidth, ScreenHeight);
+        int  ML = 40 , MT = 100 , MR = 40 , MB = 20;
 
-        JPanel panel = CreateCountryUI(ScreenWidth, ScreenHeight);
+        JButton BoardGameBtn = CreateBoardImage(ScreenWidth - (MR + ML), ScreenHeight - (MT + MB));
+
+        JPanel panel = CreateCountryUI(ScreenWidth, ScreenHeight , ML , MT , MR , MB);
 
         panel.add(BoardGameBtn , null);
+
         
-        JLabel labelMp = new JLabel();
-        labelMp.setText("Test");
-        labelMp.setBounds(ScreenWidth + 50 , ScreenHeight / 2  , 100 , 10);
+            JLabel labelMp = new JLabel();
+            labelMp.setBounds(ScreenWidth + 50 , ScreenHeight / 2  , 100 , 10);
 
-        BoardGameBtn.addMouseMotionListener(new MouseInputAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                labelMp.setText(e.getX() + " | " + e.getY());
-            }
-        });
-
-        frame.add(labelMp);
+            BoardGameBtn.addMouseMotionListener(new MouseInputAdapter() {
+                @Override
+                public void mouseMoved(MouseEvent e) {
+                    labelMp.setText(e.getX() + " | " + e.getY());
+                }
+            });
+            frame.add(labelMp);
 
         frame.add(panel);
 
@@ -70,7 +71,6 @@ public class UICreator {
         frame.setVisible(true);    
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 
-        //frame.setComponentZOrder(label, 1);
     }         
 
     JButton CreateBoardImage(int Width , int Height)
@@ -89,10 +89,13 @@ public class UICreator {
         return BoardGame;
     }
 
-    JPanel CreateCountryUI(int _Width , int _Height)
+    JPanel CreateCountryUI(int _Width , int _Height, int ML , int MT , int MR , int MB)
     {
         int RefrenceX  = 800;
         int RefrenceY  = 600;
+
+        int width = _Width - (MR + ML);
+        int height = _Height - (MT + MB);
 
         int[][] CountryBound = Data.CountryBound;
         String[] CountryName = Data.CountryName;
@@ -101,7 +104,7 @@ public class UICreator {
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setBackground( Color.ORANGE );
-        panel.setBounds(0, 0, _Width, _Height);
+        panel.setBounds(ML, MT, width, height);
         
         for(int i = 0; i < CountryBound.length; i++)
         {
@@ -110,7 +113,7 @@ public class UICreator {
             CountryButton.setActionCommand(String.valueOf(i));
 
             CountryButton.setName(CountryName[i]);
-            CountryButton.setBounds(_Width * CountryBound[i][0] / RefrenceX - 15 ,_Height * CountryBound[i][1] / RefrenceY , 50 , 20);
+            CountryButton.setBounds(width * CountryBound[i][0] / RefrenceX - 15 , height * CountryBound[i][1] / RefrenceY , 50 , 20);
 
             CountryButton.setContentAreaFilled(false);
             CountryButton.setBorderPainted(true);
