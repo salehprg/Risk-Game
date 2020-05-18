@@ -45,7 +45,7 @@ public class SoldierManager {
 
     public void Initialize()
     {
-        
+        int n = 4 ;
     }
 
     int SoldiersByCountries(Player _Player)
