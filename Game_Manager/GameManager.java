@@ -6,6 +6,8 @@ import Game_Manager.Turn.*;
 import Map.Country;
 import Map.Map;
 import PlayerManager.Player;
+import UI.InputModel;
+import UI.UIManager;
 import UI.UIUtilities;
 
 public class GameManager {
@@ -15,7 +17,7 @@ public class GameManager {
     public Map mapManger;
     public TurnManager turnManager;
     public Move move;
-    UIUtilities uiUtilities;
+    UIManager uiManager;
 
     public enum State
     {
@@ -23,10 +25,10 @@ public class GameManager {
         Move,
         War
     }
-
     State CurrentState;
+
     
-    public GameManager(final List<Player> players)
+    public GameManager(List<Player> players)
     {
         soldierManager = new SoldierManager();
         warManger = new WarManger();
@@ -34,20 +36,21 @@ public class GameManager {
         turnManager = new TurnManager(players , mapManger);
         move = new Move();
         
-        uiUtilities = new UIUtilities(null);
+        uiManager = new UIManager(this);
     }
 
     public void InitializeGame()
     {
-        final int NumbersPlayers = 2;
-        soldierManager.Initialize(NumbersPlayers);
+        int NumbersPlayers = 2;
+        Map.Initialize();
         turnManager.NextTurn(this);
     }
 
 
 //#region UI Functions
 
-    public void ChangeState(final State _State)
+
+    public void ChangeState(State _State)
     {
         if(turnManager.getCurrentPlayer().getUnimployedSoldiersCount() == 0)
         {
@@ -55,20 +58,30 @@ public class GameManager {
         }
     }
 
-    public void CountryUIClick(final Country _Country)
+
+    public void CountryUIClick(Country _Country , boolean PassData , InputModel model)
     {
         switch (CurrentState) {
             case DeploySoldier:
                 
-                //Open Dialog For Input Soldier Count
-
-                final int SoldierCount = 0;
-                
-                soldierManager.DeploySoldier(SoldierCount, _Country , turnManager);
-
-                if(turnManager.getCurrentPlayer().getUnimployedSoldiersCount() <= 0)
+                if(!PassData)
                 {
-                    CurrentState = State.Move;
+                    if(turnManager.getFirstCountrySelected() == null)
+                    {
+                        turnManager.SetCountrySelected(_Country);
+                    }
+
+                    uiManager.OpenSoldierInput_Dialog();
+                }
+                else
+                {
+                    soldierManager.DeploySoldier(model.DeploySoldier , turnManager);
+                    if(turnManager.getCurrentPlayer().getUnimployedSoldiersCount() <= 0)
+                    {
+                        CurrentState = State.Move;
+                    }
+
+                    turnManager.ClearSelectedCountry();
                 }
 
                 break;
@@ -77,7 +90,7 @@ public class GameManager {
 
                 //Open Dialog For Input Soldier To Move
 
-                final int SoldierToMove = 0;
+                int SoldierToMove = 0;
 
                 if(turnManager.getFirstCountrySelected() == null || turnManager.getSecondCountrySelected() == null)
                 {
@@ -106,7 +119,7 @@ public class GameManager {
                 {
                     if(turnManager.CheckWar())
                     {
-                        final int AttackerSoldier = warManger.DoWar(turnManager);
+                        int AttackerSoldier = warManger.DoWar(turnManager);
                         if(AttackerSoldier > 0)  // It Means Attacker Win
                         {
                             soldierManager.MoveSoldier(AttackerSoldier, turnManager);
