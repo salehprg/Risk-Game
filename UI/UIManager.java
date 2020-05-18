@@ -3,18 +3,21 @@ package UI;
 import javax.swing.JFrame;
 
 import Game_Manager.GameManager;
+import Map.Country;
 
 public class UIManager {
     
     JFrame frame;
     UIUtilities uiUtilities;
     UICreator uiCreator;
+    GameManager gameManager;
 
     int result = -1;
     boolean Opened = false;
 
     public UIManager(GameManager _GameManager)
     {
+        gameManager = _GameManager;
         uiCreator = new UICreator(_GameManager);
         uiUtilities = new UIUtilities(this);
     }
@@ -24,24 +27,18 @@ public class UIManager {
         frame = uiCreator.Initialize();
     }
 
-    public int OpenWarDialog()
-    {
-    
-        if(!Opened)
-        {
-            uiUtilities.OpenWarDialog();
-            Opened = true;
-        }
+    // public void OpenWarDialog()
+    // {
+    //     uiUtilities.OpenWarDialog();
+    // }    
 
-        return result;
-    }    
-
-    public int GetwarResult()
+    public void OpenSoldierInput_Dialog()
     {
-        return result;
+        uiUtilities.OpenInputSoldierDeployDialog();
     }
-    public void warResult(int data)
+
+    public void SetDialogResult(InputModel data)
     {
-        result = data;
+        gameManager.CountryUIClick(null , true , data);
     }
 }

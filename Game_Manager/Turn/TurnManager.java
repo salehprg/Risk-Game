@@ -133,12 +133,12 @@ public class TurnManager {
     {
         if(_Country.GetOwnerId() == CurrentPlayer.getPlayerID())
         {
-            if(_Country.GetCountryID() == SecondCountrySelected.GetCountryID())
+            if(SecondCountrySelected != null && _Country.GetCountryID() == SecondCountrySelected.GetCountryID())
             {
                 SecondCountrySelected = null;
                 return;
             }
-            if(_Country.GetCountryID() == FirstCountrySelected.GetCountryID())
+            if(FirstCountrySelected != null && _Country.GetCountryID() == FirstCountrySelected.GetCountryID())
             {
                 FirstCountrySelected = null;
                 return;

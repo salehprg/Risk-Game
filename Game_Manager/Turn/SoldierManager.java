@@ -2,9 +2,10 @@ package Game_Manager.Turn;
 
 import PlayerManager.*;
 
-import java.util.Random;
+import java.util.*;
 
 import Map.*;
+import Map.Map;
 
 public class SoldierManager {
 
@@ -23,9 +24,10 @@ public class SoldierManager {
         turnManager.getSecondCountrySelected().SetSoldierCount(SoldierOnSecondCountry + _SoldierToMove);
     }
 
-    public boolean DeploySoldier(int SoldierCount , Country ToCountry , TurnManager turnManager)
+    public boolean DeploySoldier(int SoldierCount , TurnManager turnManager)
     {
         int UnEmployeedSoldier = turnManager.getCurrentPlayer().getUnimployedSoldiersCount();
+        Country ToCountry = turnManager.getFirstCountrySelected();
 
         if(UnEmployeedSoldier >= SoldierCount)
         {
@@ -133,19 +135,19 @@ public class SoldierManager {
 
     int SoldiersByContinent(Player _Player)
     {
-        Continent _continents[] = Map.continents;
+        List<Continent> _continents = Map.continents;
         boolean HaveContinent = true;
         int result = 0;
         
         
-        for(int i = 0; i < _continents.length; i++)
+        for(int i = 0; i < _continents.size(); i++)
         {
             HaveContinent = true;
 
-            Continent CurrentContinent = _continents[i];
-            for(int j = 0; j < CurrentContinent.CountriesID.length; j++)
+            Continent CurrentContinent = _continents.get(i);
+            for(int j = 0; j < CurrentContinent.CountriesID.size(); j++)
             {
-                if(Map.getCountry(CurrentContinent.CountriesID[j]).GetOwnerId() != _Player.getPlayerID())
+                if(Map.getCountry(CurrentContinent.CountriesID.get(j)).GetOwnerId() != _Player.getPlayerID())
                 {
                     HaveContinent = false;
                     break;

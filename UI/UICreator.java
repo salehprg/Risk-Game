@@ -51,7 +51,6 @@ public class UICreator {
 
         panel.add(BoardGameBtn , null);
 
-        
             JLabel labelMp = new JLabel();
             labelMp.setBounds(50 , 50  , 100 , 10);
 
@@ -61,6 +60,7 @@ public class UICreator {
                     labelMp.setText(e.getX() + " | " + e.getY());
                 }
             });
+    
 
         panel.add(labelMp);
 
@@ -120,7 +120,6 @@ public class UICreator {
 
             CountryButton.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent e){  
-                            System.out.println(e.getActionCommand());
                             CountryClick(Integer.valueOf(e.getActionCommand()));  
                         }  
                     }); 
@@ -134,8 +133,9 @@ public class UICreator {
 
     void CountryClick(int CountryId)
     {
-        Country ClickedCountry = Map.getCountry(CountryId);
-        gameManager.CountryUIClick(ClickedCountry);
+        Country ClickedCountry = Map.getCountry(CountryId);      
+
+        gameManager.CountryUIClick(ClickedCountry , false , null);
     }
 
 
