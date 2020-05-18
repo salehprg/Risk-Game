@@ -39,7 +39,7 @@ public class GameManager {
 
     public void InitializeGame()
     {
-        final int NumbersPlayers ;
+        final int NumbersPlayers = 2;
         soldierManager.Initialize(NumbersPlayers);
         turnManager.NextTurn(this);
     }
