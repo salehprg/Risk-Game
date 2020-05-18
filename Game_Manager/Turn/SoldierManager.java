@@ -26,7 +26,7 @@ public class SoldierManager {
         Continent _continents[] = Map.continents;
         boolean HaveContinent = true;
         int result = 0;
-
+        
         
         for(int i = 0; i < _continents.length; i++)
         {
