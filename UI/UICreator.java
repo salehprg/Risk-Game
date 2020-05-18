@@ -3,8 +3,6 @@ package UI;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -14,7 +12,7 @@ import Map.Country;
 import Map.Map;
 
 import java.awt.Color;
-import java.awt.Dimension;
+
 
 public class UICreator {
 
@@ -31,15 +29,15 @@ public class UICreator {
         }
     }
 
-    public void Initialize() 
+    public JFrame Initialize() 
     {
-        JFrame frame= new JFrame("Risk Game");
+        JFrame frame = new JFrame("Risk Game");
 
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-        frame.setUndecorated(true);
-        frame.setVisible(true);
+        // frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        // frame.setUndecorated(true);
+        // frame.setVisible(true);
 
-        //frame.setSize(1000, 600);   
+        frame.setSize(1000, 600);   
         
         
         int ScreenWidth = frame.getBounds().width;
@@ -55,7 +53,7 @@ public class UICreator {
 
         
             JLabel labelMp = new JLabel();
-            labelMp.setBounds(ScreenWidth + 50 , ScreenHeight / 2  , 100 , 10);
+            labelMp.setBounds(50 , 50  , 100 , 10);
 
             BoardGameBtn.addMouseMotionListener(new MouseInputAdapter() {
                 @Override
@@ -63,13 +61,15 @@ public class UICreator {
                     labelMp.setText(e.getX() + " | " + e.getY());
                 }
             });
-            frame.add(labelMp);
 
-        frame.add(panel);
+        panel.add(labelMp);
 
-        frame.setLayout(null);    
+        frame.getContentPane().add(panel);   
+        frame.setLayout(null);
         frame.setVisible(true);    
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+
+        return frame;
 
     }         
 

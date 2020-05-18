@@ -34,7 +34,7 @@ public class GameManager {
         turnManager = new TurnManager(players , mapManger);
         move = new Move();
         
-        uiUtilities = new UIUtilities();
+        uiUtilities = new UIUtilities(null);
     }
 
     public void InitializeGame()

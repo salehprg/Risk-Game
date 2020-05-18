@@ -2,8 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import Game_Manager.*;
 import PlayerManager.Player;
-import UI.Data;
-import UI.UICreator;
+import UI.*;
 
 public class MyRBG {
 
@@ -20,12 +19,25 @@ public class MyRBG {
         GameManager gameManager = new GameManager(players);
         gameManager.InitializeGame();
 
-        UICreator uiCreator = new UICreator(gameManager);
-        uiCreator.Initialize();
+        UIManager uiManager = new UIManager(gameManager);
+        uiManager.Initialize();
+        
+        uiManager.OpenWarDialog();
 
-        System.out.println(Data.NeighbourId[0][1]);
-        System.out.println(Data.NeighbourId[0][2]);
-        System.out.println(Data.NeighbourId[0][3]);
+        while(true)
+        {
+            if(uiManager.GetwarResult() > 0)
+            {
+                System.out.println(uiManager.GetwarResult());
+                break;
+            }
+        }
+
+        
+
+        // System.out.println(Data.NeighbourId[0][1]);
+        // System.out.println(Data.NeighbourId[0][2]);
+        // System.out.println(Data.NeighbourId[0][3]);
 
     }
 }
