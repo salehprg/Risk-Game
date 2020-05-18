@@ -102,7 +102,6 @@ public class Map {
         }
     }
 
-
     public static Country getCountry(int countryId)
     {
         for(int i = 0; i< countries.size(); i++)
