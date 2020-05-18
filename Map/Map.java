@@ -4,6 +4,10 @@ package Map;
 //در این کلاس دو کلاس قاره و کشور پیاده سازی شده است//
 ////////////////////////////////////////////////////
 
+import java.util.regex.Pattern;
+
+import UI.Data;
+
 public class Map {
     
     public static Continent continents[];
