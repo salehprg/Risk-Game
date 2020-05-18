@@ -26,7 +26,7 @@ public class GameManager {
 
     State CurrentState;
     
-    public GameManager(List<Player> players)
+    public GameManager(final List<Player> players)
     {
         soldierManager = new SoldierManager();
         warManger = new WarManger();
@@ -39,14 +39,15 @@ public class GameManager {
 
     public void InitializeGame()
     {
-        soldierManager.Initialize();
+        final int NumbersPlayers = 2;
+        soldierManager.Initialize(NumbersPlayers);
         turnManager.NextTurn(this);
     }
 
 
 //#region UI Functions
 
-    public void ChangeState(State _State)
+    public void ChangeState(final State _State)
     {
         if(turnManager.getCurrentPlayer().getUnimployedSoldiersCount() == 0)
         {
@@ -54,14 +55,14 @@ public class GameManager {
         }
     }
 
-    public void CountryUIClick(Country _Country)
+    public void CountryUIClick(final Country _Country)
     {
         switch (CurrentState) {
             case DeploySoldier:
                 
                 //Open Dialog For Input Soldier Count
 
-                int SoldierCount = 0;
+                final int SoldierCount = 0;
                 
                 soldierManager.DeploySoldier(SoldierCount, _Country , turnManager);
 
@@ -76,7 +77,7 @@ public class GameManager {
 
                 //Open Dialog For Input Soldier To Move
 
-                int SoldierToMove = 0;
+                final int SoldierToMove = 0;
 
                 if(turnManager.getFirstCountrySelected() == null || turnManager.getSecondCountrySelected() == null)
                 {
@@ -105,7 +106,7 @@ public class GameManager {
                 {
                     if(turnManager.CheckWar())
                     {
-                        int AttackerSoldier = warManger.DoWar(turnManager);
+                        final int AttackerSoldier = warManger.DoWar(turnManager);
                         if(AttackerSoldier > 0)  // It Means Attacker Win
                         {
                             soldierManager.MoveSoldier(AttackerSoldier, turnManager);
