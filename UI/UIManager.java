@@ -7,7 +7,7 @@ import Map.Country;
 
 public class UIManager {
     
-    JFrame frame;
+    static JFrame frame;
     UIUtilities uiUtilities;
     UICreator uiCreator;
     GameManager gameManager;
@@ -27,14 +27,24 @@ public class UIManager {
         frame = uiCreator.Initialize();
     }
 
-    // public void OpenWarDialog()
-    // {
-    //     uiUtilities.OpenWarDialog();
-    // }    
-
-    public void OpenSoldierInput_Dialog()
+    public static void UpdateMapInfo(Country _country)
     {
-        uiUtilities.OpenInputSoldierDeployDialog();
+        Data.buttons.get(_country.GetCountryID()).setText(String.valueOf(_country.GetSoldierCount()));
+    }
+    
+    public void UpdateGameInfo()
+    {
+
+    }
+
+    public JFrame getFrame()
+    {
+        return frame;
+    }
+
+    public void OpenSoldierInput_Dialog(InputModel input)
+    {
+        uiUtilities.OpenInputSoldierDeployDialog(input);
     }
 
     public void SetDialogResult(InputModel data)

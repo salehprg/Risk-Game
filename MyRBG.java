@@ -29,11 +29,7 @@ public class MyRBG {
 
         UIManager uiManager = new UIManager(gameManager);
         uiManager.Initialize();
-    
 
-        // System.out.println(Data.NeighbourId[0][1]);
-        // System.out.println(Data.NeighbourId[0][2]);
-        // System.out.println(Data.NeighbourId[0][3]);
 
     }
 }

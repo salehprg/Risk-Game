@@ -13,6 +13,12 @@ public class PlayerManager {
         setPlayers(_Players);
     }
     
+
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
     /**
         * @param players the players to set
         */

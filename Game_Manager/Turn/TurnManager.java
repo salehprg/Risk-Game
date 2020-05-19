@@ -11,23 +11,35 @@ import PlayerManager.*;
 public class TurnManager {
     Player CurrentPlayer;
     PlayerManager playerManager;
+    GameManager gameManager;
     
     
     Country FirstCountrySelected , SecondCountrySelected;
 
 
-    public TurnManager(List<Player> player , Map _Map)
+    public TurnManager(List<Player> player , GameManager _gameManager)
     {
-        playerManager = new PlayerManager(player);    }
+        playerManager = new PlayerManager(player);    
+        gameManager = _gameManager;
+    }
 
+    public List<Player> getPlayerList()
+    {
+        return playerManager.getPlayers();
+    }
     public Player getCurrentPlayer()
     {
         return CurrentPlayer;
     }
 
-    public void NextTurn(GameManager _GameManager)
+    public void NextTurn()
     {
         int CurrentId = (CurrentPlayer != null ? CurrentPlayer.getPlayerID() : -1);  //Null just for the first time game Run
+
+        if(CurrentPlayer != null)
+        {
+            CurrentPlayer.setIsActive(false);  //Old player
+        }
 
         if(CurrentId + 1 > playerManager.getPlayerLastIndex())
         {
@@ -38,7 +50,9 @@ public class TurnManager {
             CurrentPlayer = playerManager.getPlayer(CurrentId + 1);
         }
 
-        _GameManager.ChangeState(State.DeploySoldier);
+        CurrentPlayer.setIsActive(true);  // New Player
+
+        gameManager.ChangeState(State.DeploySoldier);
     }
 
 

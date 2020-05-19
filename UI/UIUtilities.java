@@ -1,12 +1,11 @@
 package UI;
 
 import javax.swing.*;
-import javax.swing.event.MouseInputAdapter;
 
-import java.awt.Dialog.ModalExclusionType;
 import java.awt.event.*;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
+import java.awt.*;
+import java.io.*;
+
 
 public class UIUtilities {
 
@@ -14,9 +13,18 @@ public class UIUtilities {
     
     UIManager uiManager;
 
+    int frameWidth , frameHeight;
+
+    String AppPath;
+
     public UIUtilities(UIManager _uiManager)
     {
         uiManager = _uiManager;
+        try {
+            AppPath = new File(".").getCanonicalPath();
+        } 
+        catch (IOException e) {
+        }
     }
 
     public void OpenInputSoldierWarDialog()
@@ -24,50 +32,69 @@ public class UIUtilities {
 
     }
 
-    // public int OpenWarDialog()
-    // {
-    //     JFrame dialog = new JFrame();
-    //     dialog.setBounds(50, 50, 200, 150);
-
-    //     JButton button = new JButton("SendData");
-
-    //     button.addActionListener(new ActionListener(){  
-    //         public void actionPerformed(ActionEvent e){  
-    //                     result += 2;
-    //                     uiManager.SetDialogResult(result);
-    //                     dialog.setVisible(false);  
-    //                 }  
-    //             }); 
-
-    //     dialog.add(button);
-
-    //     dialog.setUndecorated(true);
-    //     dialog.setVisible(true);
-
-    //     return result;
-    // }
-
-    public void OpenInputSoldierDeployDialog()
+    public void OpenInputSoldierDeployDialog(InputModel input)
     {
+        frameWidth = uiManager.getFrame().getWidth();
+        frameHeight = uiManager.getFrame().getHeight();
+        
         JFrame dialog = new JFrame();
-        dialog.setBounds(50, 50, 200, 150);
+        dialog.setUndecorated(true);
+        dialog.setSize(200, 150);
+        dialog.setLocationRelativeTo(null);   //Center Screen
 
-        JButton button = new JButton("SendData");
-        button.setBounds(10, 10, 30, 30);
+        ImageIcon BoardGameIcon = new ImageIcon(AppPath + "\\UI\\Images\\BoardGame\\Letter.png");
 
-        button.addActionListener(new ActionListener(){  
+        JLabel backgroundImage = new JLabel();
+        backgroundImage.setIcon(new ImageIcon(BoardGameIcon.getImage().getScaledInstance(dialog.getWidth(), dialog.getHeight() ,java.awt.Image.SCALE_SMOOTH)));
+        backgroundImage.setBounds(0, 0, dialog.getWidth(), dialog.getHeight());
+
+        JLabel maxDeploy = new JLabel("Max Soldier : " + String.valueOf(input.DeploySoldier));
+        maxDeploy.setBounds(30, 20, 100, 20);
+
+        JTextField txtbox = new JTextField();
+        txtbox.setBounds(30, 50 , 100, 20);
+
+        JButton buttonOk = new JButton("Ok");
+        buttonOk.setBounds(30, 80, 60, 30);
+        //buttonOk.setBorderPainted(false);
+        buttonOk.setContentAreaFilled(false);
+        buttonOk.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        buttonOk.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
                         result = new InputModel();
-                        result.DeploySoldier = 2;
+                        result.DeploySoldier = Integer.valueOf(txtbox.getText());
                         
                         uiManager.SetDialogResult(result);
                         dialog.setVisible(false);  
                     }  
                 }); 
 
-        dialog.add(button);
+        
+        JButton buttonClose = new JButton("X");
+        buttonClose.setBounds(100, 80, 60, 30);
+        //buttonClose.setBorderPainted(false);
+        buttonClose.setContentAreaFilled(false);
+        buttonClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+        buttonClose.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                        dialog.setVisible(false);  
+                    }  
+                }); 
 
-        dialog.setUndecorated(true);
+        
+        dialog.setBackground(new Color(0,0,0,0));
+
+        
+        dialog.add(txtbox , null);
+        dialog.add(maxDeploy , null);
+        dialog.add(buttonOk , null);
+        dialog.add(buttonClose , null);
+        dialog.add(backgroundImage , null);
+
+        dialog.setLayout(null);
+        
         dialog.setVisible(true);
     }
 

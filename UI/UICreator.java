@@ -11,7 +11,7 @@ import Game_Manager.GameManager;
 import Map.Country;
 import Map.Map;
 
-import java.awt.Color;
+import java.awt.*;
 
 
 public class UICreator {
@@ -98,8 +98,6 @@ public class UICreator {
         int height = _Height - (MT + MB);
 
         int[][] CountryBound = Data.CountryBound;
-        String[] CountryName = Data.CountryName;
-
 
         JPanel panel = new JPanel();
         panel.setLayout(null);
@@ -108,15 +106,15 @@ public class UICreator {
         
         for(int i = 0; i < CountryBound.length; i++)
         {
-            JButton CountryButton = new JButton(String.valueOf(i));
+            JButton CountryButton = new JButton();
             
             CountryButton.setActionCommand(String.valueOf(i));
 
-            CountryButton.setName(CountryName[i]);
             CountryButton.setBounds(width * CountryBound[i][0] / RefrenceX - 15 , height * CountryBound[i][1] / RefrenceY , 50 , 20);
 
+            CountryButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             CountryButton.setContentAreaFilled(false);
-            CountryButton.setBorderPainted(true);
+            CountryButton.setBorderPainted(false);
 
             CountryButton.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent e){  
@@ -124,6 +122,7 @@ public class UICreator {
                         }  
                     }); 
 
+            Data.buttons.add(CountryButton);
             panel.add(CountryButton);
         }
 

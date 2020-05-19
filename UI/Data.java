@@ -1,6 +1,12 @@
 package UI;
 
+import java.util.*;
+
+import javax.swing.JButton;
+
 public class Data {
+
+    public static List<JButton> buttons = new ArrayList<JButton>();
  
     public static int[][] CountryBound = 
     { 

@@ -2,6 +2,7 @@ package Game_Manager;
 
 import java.util.List;
 
+import Game_Manager.Game_Data.GameData;
 import Game_Manager.Turn.*;
 import Map.Country;
 import Map.Map;
@@ -14,9 +15,10 @@ public class GameManager {
 
     public SoldierManager soldierManager;
     public WarManger warManger;
-    public Map mapManger;
     public TurnManager turnManager;
     public Move move;
+
+    GameData gameData;
     UIManager uiManager;
 
     public enum State
@@ -25,25 +27,26 @@ public class GameManager {
         Move,
         War
     }
-    State CurrentState;
+    State CurrentState = State.DeploySoldier;
 
     
     public GameManager(List<Player> players)
     {
         soldierManager = new SoldierManager();
         warManger = new WarManger();
-        mapManger = new Map();
-        turnManager = new TurnManager(players , mapManger);
+        turnManager = new TurnManager(players  , this);
         move = new Move();
-        
+        gameData = new GameData(turnManager);
+
         uiManager = new UIManager(this);
     }
 
     public void InitializeGame()
     {
         int NumbersPlayers = 2;
+
         Map.Initialize();
-        turnManager.NextTurn(this);
+        turnManager.NextTurn();
     }
 
 
@@ -59,7 +62,7 @@ public class GameManager {
     }
 
 
-    public void CountryUIClick(Country _Country , boolean PassData , InputModel model)
+    public void CountryUIClick(Country _Country , boolean PassData , InputModel dataModel)
     {
         switch (CurrentState) {
             case DeploySoldier:
@@ -71,17 +74,31 @@ public class GameManager {
                         turnManager.SetCountrySelected(_Country);
                     }
 
-                    uiManager.OpenSoldierInput_Dialog();
+                    InputModel dialogModel = new InputModel();
+
+                    dialogModel.DeploySoldier = turnManager.getCurrentPlayer().getUnimployedSoldiersCount();
+
+                    uiManager.OpenSoldierInput_Dialog(dialogModel);
                 }
                 else
                 {
-                    soldierManager.DeploySoldier(model.DeploySoldier , turnManager);
-                    if(turnManager.getCurrentPlayer().getUnimployedSoldiersCount() <= 0)
+                    if(soldierManager.DeploySoldier(dataModel.DeploySoldier , turnManager))
                     {
-                        CurrentState = State.Move;
-                    }
+                        if(turnManager.getCurrentPlayer().getUnimployedSoldiersCount() <= 0)
+                        {
+                            CurrentState = State.Move;
+                        }
 
-                    turnManager.ClearSelectedCountry();
+                        gameData.UpdateMapInfo(turnManager.getFirstCountrySelected());
+                        turnManager.ClearSelectedCountry();
+                    }
+                    else
+                    {
+                        InputModel dialogModel = new InputModel();
+                        dialogModel.DeploySoldier = turnManager.getCurrentPlayer().getUnimployedSoldiersCount();
+                        uiManager.OpenSoldierInput_Dialog(dialogModel);
+                    }
+                    
                 }
 
                 break;
@@ -127,6 +144,8 @@ public class GameManager {
                         }
                     }
                 }
+
+                turnManager.NextTurn();
 
                 break;
         }
