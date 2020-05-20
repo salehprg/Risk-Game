@@ -1,5 +1,6 @@
 package Game_Manager;
 
+import java.io.IOException;
 import java.util.List;
 
 import Game_Manager.Game_Data.GameData;
@@ -13,10 +14,10 @@ import UI.UIUtilities;
 
 public class GameManager {
 
-    public SoldierManager soldierManager;
-    public WarManger warManger;
-    public TurnManager turnManager;
-    public Move move;
+    //public static SoldierManager SoldierManager;
+    //public static WarManger warManger;
+    public static TurnManager turnManager;
+    public static Move move;
 
     GameData gameData;
     UIManager uiManager;
@@ -27,16 +28,17 @@ public class GameManager {
         Move,
         War
     }
-    State CurrentState = State.DeploySoldier;
+
+    public static State CurrentState = State.DeploySoldier;
 
     
     public GameManager(List<Player> players)
     {
-        soldierManager = new SoldierManager();
-        warManger = new WarManger();
+        // SoldierManager = new SoldierManager();
+        // warManger = new WarManger();
         turnManager = new TurnManager(players  , this);
         move = new Move();
-        gameData = new GameData(turnManager);
+        //gameData = new GameData(TurnManager);
 
         uiManager = new UIManager(this);
     }
@@ -47,108 +49,187 @@ public class GameManager {
 
         Map.Initialize();
         turnManager.NextTurn();
+
     }
 
 
 //#region UI Functions
 
-
-    public void ChangeState(State _State)
+    public void FinishTurn()
     {
-        if(turnManager.getCurrentPlayer().getUnimployedSoldiersCount() == 0)
+        if(CurrentState != State.DeploySoldier)
         {
-            CurrentState = _State;
+            turnManager.NextTurn();
         }
+    }
+
+    public static void ChangeState(State _State)
+    {
+        CurrentState = _State;
     }
 
 
     public void CountryUIClick(Country _Country , boolean PassData , InputModel dataModel)
     {
-        switch (CurrentState) {
-            case DeploySoldier:
-                
-                if(!PassData)
+        try
+        {
+            if(PassData && dataModel.IsExited)
+            {
+                TurnManager.ClearSelectedCountry();
+                return;
+            }
+            else if(!PassData)
+            {
+                if(TurnManager.getFirstCountrySelected() != null) //It means FirstCountry selected before
                 {
-                    if(turnManager.getFirstCountrySelected() == null)
+                    if(_Country.GetOwnerId() != TurnManager.getCurrentPlayer().getPlayerID() && _Country.GetOwnerId() != -1)
                     {
-                        turnManager.SetCountrySelected(_Country);
+                        ChangeState(State.War);
                     }
-
-                    InputModel dialogModel = new InputModel();
-
-                    dialogModel.DeploySoldier = turnManager.getCurrentPlayer().getUnimployedSoldiersCount();
-
-                    uiManager.OpenSoldierInput_Dialog(dialogModel);
                 }
-                else
-                {
-                    if(soldierManager.DeploySoldier(dataModel.DeploySoldier , turnManager))
+            }
+
+            switch (CurrentState) {
+                case DeploySoldier:
+                    
+                    if(!PassData)
                     {
-                        if(turnManager.getCurrentPlayer().getUnimployedSoldiersCount() <= 0)
+                        if(TurnManager.getFirstCountrySelected() == null)
                         {
-                            CurrentState = State.Move;
+                            TurnManager.SetCountrySelected(_Country);
                         }
 
-                        gameData.UpdateMapInfo(turnManager.getFirstCountrySelected());
-                        turnManager.ClearSelectedCountry();
+                        if(TurnManager.CheckDeploy(_Country))
+                        {
+                            InputModel dialogModel = new InputModel();
+                            dialogModel.DeploySoldier = TurnManager.getCurrentPlayer().getUnimployedSoldiersCount();
+                            uiManager.OpenSoldierInput_Dialog(dialogModel);
+                        }
+                        else
+                        {
+                            System.out.println("Not Yours");
+                        }
                     }
                     else
                     {
-                        InputModel dialogModel = new InputModel();
-                        dialogModel.DeploySoldier = turnManager.getCurrentPlayer().getUnimployedSoldiersCount();
-                        uiManager.OpenSoldierInput_Dialog(dialogModel);
-                    }
-                    
-                }
-
-                break;
-
-            case Move:
-
-                //Open Dialog For Input Soldier To Move
-
-                int SoldierToMove = 0;
-
-                if(turnManager.getFirstCountrySelected() == null || turnManager.getSecondCountrySelected() == null)
-                {
-                    turnManager.SetCountrySelected(_Country);
-                }
-
-                if(turnManager.getSecondCountrySelected() != null)
-                {
-                    if(turnManager.CheckMove())
-                    {
-                        soldierManager.MoveSoldier(SoldierToMove , turnManager);
-                        turnManager.ClearSelectedCountry();
-                    }
-                }
-
-                break;
-                
-            case War:
-
-                if(turnManager.getFirstCountrySelected() == null || turnManager.getSecondCountrySelected() == null)
-                {
-                    turnManager.SetCountrySelected(_Country);
-                }
-
-                if(turnManager.getSecondCountrySelected() != null)
-                {
-                    if(turnManager.CheckWar())
-                    {
-                        int AttackerSoldier = warManger.DoWar(turnManager);
-                        if(AttackerSoldier > 0)  // It Means Attacker Win
+                        if(SoldierManager.DeploySoldier(dataModel.DeploySoldier))
                         {
-                            soldierManager.MoveSoldier(AttackerSoldier, turnManager);
-                            turnManager.AddDefenderCountryToAttackerCountry();
+                            if(TurnManager.getCurrentPlayer().getUnimployedSoldiersCount() <= 0)
+                            {
+                                CurrentState = State.Move;
+                                //turnManager.NextTurn();
+                            }
+
+                            GameData.UpdateGameInfo();
+                            GameData.UpdateMapInfo();
+                            TurnManager.ClearSelectedCountry();
+                        }
+                        else
+                        {
+                            InputModel dialogModel = new InputModel();
+                            dialogModel.DeploySoldier = TurnManager.getCurrentPlayer().getUnimployedSoldiersCount();
+                            uiManager.OpenSoldierInput_Dialog(dialogModel);
+                        }
+                        
+                    }
+
+                    break;
+
+                case Move:
+
+                    if(!PassData)
+                    {
+                        if(TurnManager.getFirstCountrySelected() == null || TurnManager.getSecondCountrySelected() == null)
+                        {
+                            TurnManager.SetCountrySelected(_Country);
+                        }   
+
+                        if(TurnManager.getSecondCountrySelected() != null)
+                        {
+                            //if(TurnManager.CheckMove())
+                            // {
+                                InputModel dialogModel = new InputModel();
+                                dialogModel.FirstCountry = TurnManager.getFirstCountrySelected();
+                                dialogModel.SecondCountry = TurnManager.getSecondCountrySelected();
+                                dialogModel.MoveSoldier = TurnManager.getFirstCountrySelected().GetSoldierCount() - 1;
+
+                                uiManager.OpenSoldierMoveInput_Dialog(dialogModel);
+                            // }
+                            // else
+                            // {
+                            //     System.out.println("Not Yours");
+                            // }
                         }
                     }
-                }
+                    else
+                    {
+                        int SoldierToMove = dataModel.MoveSoldier;
 
-                turnManager.NextTurn();
+                        if(SoldierManager.MoveSoldier(SoldierToMove))
+                        {
+                            GameData.UpdateMapInfo();
+                            TurnManager.ClearSelectedCountry();
+                        }
+                        else
+                        {
+                            InputModel dialogModel = new InputModel();
+                            dialogModel.FirstCountry = TurnManager.getFirstCountrySelected();
+                            dialogModel.SecondCountry = TurnManager.getSecondCountrySelected();
+                            dialogModel.MoveSoldier = TurnManager.getFirstCountrySelected().GetSoldierCount() - 1;
 
-                break;
+                            uiManager.OpenSoldierMoveInput_Dialog(dialogModel);
+                        }
+
+                    }
+
+                    break;
+                    
+                case War:
+
+                    if(!PassData)
+                    {
+                        if(TurnManager.getFirstCountrySelected() == null || TurnManager.getSecondCountrySelected() == null)
+                        {
+                            TurnManager.SetCountrySelected(_Country);
+                        }
+
+                        if(TurnManager.getSecondCountrySelected() != null)
+                        {
+                            InputModel dialogModel = new InputModel();
+                            dialogModel.FirstCountry = TurnManager.getFirstCountrySelected();
+                            dialogModel.SecondCountry = TurnManager.getSecondCountrySelected();
+                            dialogModel.AttackerSoldier = TurnManager.getFirstCountrySelected().GetSoldierCount() - 1;
+                            dialogModel.DefenderSoldier = TurnManager.getSecondCountrySelected().GetSoldierCount();
+
+                            uiManager.OpenWar_Dialog(dialogModel);
+                        }
+                    }
+                    else
+                    {
+                        // if(TurnManager.CheckWar())
+                        // {
+                            int AttackerSoldier = WarManger.DoWar(dataModel.AttackerSoldier , dataModel.DefenderSoldier);
+                            if(AttackerSoldier > 0)  // It Means Attacker Win
+                            {
+                                TurnManager.AddDefenderCountryToAttackerCountry();
+                                SoldierManager.MoveSoldier(AttackerSoldier);
+                            }
+                        //}
+                        GameData.UpdateMapInfo();
+                        TurnManager.ClearSelectedCountry();
+                    }
+
+                    //turnManager.NextTurn();
+
+                    break;
+            }
         }
+        catch(Exception ex){
+            TurnManager.ClearSelectedCountry();
+            System.out.println(ex.getMessage());
+        }
+
+
     }
 
 

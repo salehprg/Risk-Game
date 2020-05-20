@@ -5,8 +5,15 @@ import java.util.List;
 //در این کلاس اطلاعات بازیکن پیاده شده است
 public class PlayerManager {
 
-    List<Player> players;
+    static List<Player> players;
     
+    public enum PlayerColor
+    {
+        Red,
+        Blue,
+        Green,
+        Yellow
+    }
     
     public PlayerManager(List<Player> _Players)
     {
@@ -15,21 +22,21 @@ public class PlayerManager {
     
 
 
-    public List<Player> getPlayers() {
+    public static List<Player> getPlayers() {
         return players;
     }
 
     /**
-        * @param players the players to set
+        * @param _players the players to set
         */
-    public void setPlayers(List<Player> players) {
-        this.players = players;
+    public static void setPlayers(List<Player> _players) {
+        players = _players;
     }
    
     /**
      * @return the players
      */
-    public Player getPlayer(int id) {
+    public static Player getPlayer(int id) {
         return players.get(id);
     }
 

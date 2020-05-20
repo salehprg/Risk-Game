@@ -70,6 +70,7 @@ public class Map {
 
             Country NewCountry = new Country();
             NewCountry.CountryID = i;
+            NewCountry.SetOwnerId(-1);
 
             countries.add(NewCountry);
 

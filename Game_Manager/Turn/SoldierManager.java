@@ -1,41 +1,52 @@
 package Game_Manager.Turn;
 
 import PlayerManager.*;
-import UI.Data;
 
 import java.util.*;
 
+import Game_Manager.Game_Data.GameData;
 import Map.*;
 import Map.Map;
 
 public class SoldierManager {
 
-    public void GiveSoldierToPlayer(Player _Player)
+    public static void GiveSoldierToPlayer(Player _Player)
     {
         _Player.setUnimployedSoldiersCount(SoldiersByContinent(_Player) + SoldiersByCountries(_Player));
         
     }
 
-    public void MoveSoldier(int _SoldierToMove , TurnManager turnManager)
+    public static boolean MoveSoldier(int _SoldierToMove)
     {
-        int SoldierOnFirstCountry = turnManager.getFirstCountrySelected().GetSoldierCount();
-        int SoldierOnSecondCountry = turnManager.getSecondCountrySelected().GetSoldierCount();
+        int SoldierOnFirstCountry = TurnManager.getFirstCountrySelected().GetSoldierCount();
+        int SoldierOnSecondCountry = TurnManager.getSecondCountrySelected().GetSoldierCount();
 
-        turnManager.getFirstCountrySelected().SetSoldierCount(SoldierOnFirstCountry - _SoldierToMove);
-        turnManager.getSecondCountrySelected().SetSoldierCount(SoldierOnSecondCountry + _SoldierToMove);
+        if(_SoldierToMove <= SoldierOnFirstCountry - 1)
+        {
+            TurnManager.getFirstCountrySelected().SetSoldierCount(SoldierOnFirstCountry - _SoldierToMove);
+            TurnManager.getSecondCountrySelected().SetSoldierCount(SoldierOnSecondCountry + _SoldierToMove);
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    public boolean DeploySoldier(int SoldierCount , TurnManager turnManager)
+    public static boolean DeploySoldier(int SoldierCount)
     {
-        int UnEmployeedSoldier = turnManager.getCurrentPlayer().getUnimployedSoldiersCount();
-        Country ToCountry = turnManager.getFirstCountrySelected();
+        int UnEmployeedSoldier = TurnManager.getCurrentPlayer().getUnimployedSoldiersCount();
+        Country ToCountry = TurnManager.getFirstCountrySelected();
 
-        if(UnEmployeedSoldier >= SoldierCount)
+        if(UnEmployeedSoldier >= SoldierCount && SoldierCount != 0)
         {
-            if(turnManager.CheckDeploy(ToCountry))
+            if(TurnManager.CheckDeploy(ToCountry))
             {
                 ToCountry.AddSoldier(SoldierCount);
-                turnManager.getCurrentPlayer().setUnimployedSoldiersCount(UnEmployeedSoldier - SoldierCount);
+                ToCountry.SetOwnerId(TurnManager.CurrentPlayer.getPlayerID());
+                TurnManager.getCurrentPlayer().setUnimployedSoldiersCount(UnEmployeedSoldier - SoldierCount);
+
                 return true;
             }
             else
@@ -49,7 +60,7 @@ public class SoldierManager {
         }
     }
     
-    public void Initialize(int n)
+    public static void Initialize(int n)
     {
         int [] CountryID = new int [41] ;//ID player owner dar khane haye arraye gharar migirnd
         int limit = 41 / n ;//had aghal tedad country baraye har player
@@ -129,12 +140,12 @@ public class SoldierManager {
         }   
     }
 
-    int SoldiersByCountries(Player _Player)
+    static int SoldiersByCountries(Player _Player)
     {
         return _Player.getCountriesCount() / 3;
     }
 
-    int SoldiersByContinent(Player _Player)
+    static int SoldiersByContinent(Player _Player)
     {
         List<Continent> _continents = Map.continents;
         boolean HaveContinent = true;

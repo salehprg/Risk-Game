@@ -4,29 +4,25 @@ import Game_Manager.Turn.TurnManager;
 import Map.Country;
 import PlayerManager.Player;
 import UI.Data;
+import UI.UIManager;
 
 public class GameData {
 
-    TurnManager turnManager;
-    Player CurrentPlayer;
 
-    public GameData(TurnManager _turnManager)
+    public static void UpdateGameInfo()
     {
-        turnManager = _turnManager;
+        UIManager.UpdateGameInfo();
     }
 
-    void GetData()
+    public static void UpdateMapInfo()
     {
-        CurrentPlayer = turnManager.getCurrentPlayer();
-    }
-
-    public void UpdateGameInfo()
-    {
-        GetData();
-    }
-
-    public void UpdateMapInfo(Country _country)
-    {
-        Data.buttons.get(_country.GetCountryID()).setText(String.valueOf(_country.GetSoldierCount()));
+        if(TurnManager.getFirstCountrySelected() != null)
+        {
+            UIManager.UpdateMapInfo(TurnManager.getFirstCountrySelected());
+        }
+        if(TurnManager.getSecondCountrySelected() != null)
+        {
+            UIManager.UpdateMapInfo(TurnManager.getSecondCountrySelected());
+        }
     }
 }

@@ -1,10 +1,28 @@
 package UI;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
+import javax.imageio.IIOException;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class Data {
+
+    public static String GetAppPath()
+    {
+        try {
+            String AppPath = new File(".").getCanonicalPath();
+            return AppPath;
+        } 
+        catch (IOException e) {
+            return "";
+        }
+    }   
+
+    public static List<JLabel> PlayerNameLabels = new ArrayList<JLabel>();
+    public static List<JLabel> PlayerSoldierLabels = new ArrayList<JLabel>();
 
     public static List<JButton> buttons = new ArrayList<JButton>();
  

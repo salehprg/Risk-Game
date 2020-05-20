@@ -9,17 +9,12 @@ import Map.Country;
 
 public class WarManger {
 
-    public int DoWar(TurnManager turnManager)
+    public static int DoWar(int AttackerSoldier , int DefenderSoldier)
     {
 
-        Country AttackerCountry = turnManager.FirstCountrySelected;
-        Country DefenderCountry = turnManager.SecondCountrySelected;
+        Country AttackerCountry = TurnManager.FirstCountrySelected;
+        Country DefenderCountry = TurnManager.SecondCountrySelected;
 
-        // Open Dialog For Attacker Soldier
-        // Open Dialog For Defender Soldier
-
-        int AttackerSoldier = 0;
-        int DefenderSoldier = 0;
 
         int AttackerDiceCount = (AttackerSoldier > 3 ? 3 : AttackerSoldier);
         int DefenderDiceCount = (DefenderSoldier > 2 ? 2 : DefenderSoldier);
