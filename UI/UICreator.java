@@ -3,13 +3,16 @@ package UI;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 
 import Game_Manager.GameManager;
+import Game_Manager.Turn.TurnManager;
 import Map.Country;
 import Map.Map;
+import PlayerManager.Player;
 
 import java.awt.*;
 
@@ -22,11 +25,7 @@ public class UICreator {
     public UICreator(GameManager _GameManager) {
         gameManager = _GameManager;
 
-        try {
-            AppPath = new File(".").getCanonicalPath();
-        } 
-        catch (IOException e) {
-        }
+        AppPath = Data.GetAppPath();
     }
 
     public JFrame Initialize() 
@@ -64,6 +63,9 @@ public class UICreator {
 
         panel.add(labelMp);
 
+        CreatePlayerUI(frame);
+        frame.add(FinishNyTurn());
+        
         frame.getContentPane().add(panel);   
         frame.setLayout(null);
         frame.setVisible(true);    
@@ -72,6 +74,28 @@ public class UICreator {
         return frame;
 
     }         
+
+    void CreatePlayerUI(JFrame _frame)
+    {
+        List<Player> players = TurnManager.getPlayerList();
+
+        for(int i = 0; i < players.size(); i++)
+        {
+            Player SelectedPlayer = players.get(i);
+            JLabel playerName = new JLabel(SelectedPlayer.getPlayerName());
+            
+            playerName.setBounds(20 + i * 100, 5, 100, 40);
+
+            JLabel UnEmpSoldierCount = new JLabel(String.valueOf(SelectedPlayer.getUnimployedSoldiersCount()));
+            UnEmpSoldierCount.setBounds(20 + i * 100, 20, 50, 40);
+
+            Data.PlayerNameLabels.add(playerName);
+            Data.PlayerSoldierLabels.add(UnEmpSoldierCount);
+
+            _frame.add(playerName , null);
+            _frame.add(UnEmpSoldierCount , null);
+        }
+    }
 
     JButton CreateBoardImage(int Width , int Height)
     {
@@ -107,7 +131,6 @@ public class UICreator {
         for(int i = 0; i < CountryBound.length; i++)
         {
             JButton CountryButton = new JButton();
-            
             CountryButton.setActionCommand(String.valueOf(i));
 
             CountryButton.setBounds(width * CountryBound[i][0] / RefrenceX - 15 , height * CountryBound[i][1] / RefrenceY , 50 , 20);
@@ -123,7 +146,7 @@ public class UICreator {
                     }); 
 
             Data.buttons.add(CountryButton);
-            panel.add(CountryButton);
+            panel.add(CountryButton , null);
         }
 
         return panel;
@@ -135,6 +158,23 @@ public class UICreator {
         Country ClickedCountry = Map.getCountry(CountryId);      
 
         gameManager.CountryUIClick(ClickedCountry , false , null);
+    }
+
+    JButton FinishNyTurn()
+    {
+        JButton finishTurnBtn = new JButton("Next Turn");
+        finishTurnBtn.setBounds(100, 60, 120, 30);
+        //finishTurnBtn.setBorderPainted(false);
+        finishTurnBtn.setContentAreaFilled(false);
+        finishTurnBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+        finishTurnBtn.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                        gameManager.FinishTurn();
+                    }  
+                }); 
+
+        return finishTurnBtn;
     }
 
 

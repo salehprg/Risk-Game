@@ -1,16 +1,18 @@
 package PlayerManager;
 
+import PlayerManager.PlayerManager.PlayerColor;
+
 public class Player {
     private int PlayerID ;
     private String PlayerName ;
-    private int PlayerColor ;
+    private PlayerColor PlayerColor ;
     private int CountriesCount ;
     private int UnimployedSoldiersCount ;
     private boolean IsActive ;
     private int Status ;
     
     
-   public Player(int PlayerID, String PlayerName, int PlayerColor, int CountriesCount )
+   public Player(int PlayerID, String PlayerName, PlayerColor PlayerColor, int CountriesCount )
    {
        setPlayerID(PlayerID);
        setPlayerName(PlayerName);
@@ -29,7 +31,7 @@ public class Player {
         this.PlayerName = PlayerName;
     }
 
-    public void setPlayerColor(int PlayerColor) {
+    public void setPlayerColor(PlayerColor PlayerColor) {
         this.PlayerColor = PlayerColor;
     }
 
@@ -57,7 +59,7 @@ public class Player {
         return PlayerName;
     }
 
-    public int getPlayerColor() {
+    public PlayerColor getPlayerColor() {
         return PlayerColor;
     }
 
@@ -69,7 +71,7 @@ public class Player {
         return UnimployedSoldiersCount;
     }
 
-    public boolean isIsActive() {
+    public boolean GetIsActive() {
         return IsActive;
     }
 
