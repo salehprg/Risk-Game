@@ -82,7 +82,7 @@ public class SoldierManager {
             while( limit >= CountryCount )
             {
                 testCountry = myRandom.nextInt(41) ;
-                if(CountryID[testCountry] != 0)//saheb nadasht
+                if(CountryID[testCountry] == 0)//saheb nadasht
                 {
                     CountryID[testCountry] = i + 1 ;//player i+1 owner jadid mishavad
                     CountryCount++ ;
