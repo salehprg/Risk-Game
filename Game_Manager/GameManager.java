@@ -68,7 +68,7 @@ public class GameManager {
         CurrentState = _State;
     }
 
-
+    //passData == true ==> ersal data //passData == false ==> roye keshvar click shode
     public void CountryUIClick(Country _Country , boolean PassData , InputModel dataModel)
     {
         try
