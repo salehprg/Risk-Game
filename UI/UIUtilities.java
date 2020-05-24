@@ -4,8 +4,6 @@ import javax.swing.*;
 
 import java.awt.event.*;
 import java.awt.*;
-import java.io.*;
-
 
 public class UIUtilities {
 
@@ -43,22 +41,11 @@ public class UIUtilities {
                                         " To " + String.valueOf(input.SecondCountry.GetCountryID()));
         FromCountry.setBounds(30, 30, 150, 20);
 
-
-        int AttackerSoldier = (input.AttackerSoldier > 3 ? 3 : input.AttackerSoldier);
-        JLabel Attackerlbl = new JLabel("Max Soldier Attacker : " + String.valueOf(AttackerSoldier));
+        JLabel Attackerlbl = new JLabel("Max Soldier Attacker : " + String.valueOf(input.AttackerSoldier));
         Attackerlbl.setBounds(30, 50, 200, 20);
 
         JTextField txtboxAttck = new JTextField();
         txtboxAttck.setBounds(30, 80 , 100, 20);
-
-
-
-        int DefenderSoldier = (input.DefenderSoldier > 2 ? 2 : input.DefenderSoldier);
-        JLabel Defenderlbl = new JLabel("Max Soldier Defender : " + String.valueOf(DefenderSoldier));
-        Defenderlbl.setBounds(30, 120, 200, 20);
-
-        JTextField txtboxDfnd = new JTextField();
-        txtboxDfnd.setBounds(30, 150 , 100, 20);
 
 
         JButton buttonOk = new JButton("Ok");
@@ -71,7 +58,6 @@ public class UIUtilities {
             public void actionPerformed(ActionEvent e){  
                         result = new InputModel();
                         result.AttackerSoldier = Integer.valueOf(txtboxAttck.getText());
-                        result.DefenderSoldier = Integer.valueOf(txtboxDfnd.getText());
                         
                         uiManager.SetDialogResult(result);
                         dialog.setVisible(false);  
@@ -100,12 +86,10 @@ public class UIUtilities {
 
         
         dialog.add(txtboxAttck , null);
-        dialog.add(txtboxDfnd , null);
 
         dialog.add(FromCountry , null);
 
         dialog.add(Attackerlbl , null);
-        dialog.add(Defenderlbl , null);
         
         dialog.add(buttonOk , null);
         dialog.add(buttonClose , null);
@@ -163,6 +147,10 @@ public class UIUtilities {
         
         buttonClose.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
+                        result = new InputModel();
+                        result.IsExited = true;
+                        
+                        uiManager.SetDialogResult(result);
                         dialog.setVisible(false);  
                     }  
                 }); 

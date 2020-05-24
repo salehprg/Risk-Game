@@ -8,6 +8,7 @@ import Game_Manager.Game_Data.GameData;
 import Map.Country;
 import Map.Map;
 import PlayerManager.*;
+import UI.Data;
 
 public class TurnManager {
     static Player CurrentPlayer;
@@ -78,26 +79,36 @@ public class TurnManager {
     {
         _FromCountry.SetChecked(true);
         int[] Neighbors = _FromCountry.GetNeighborsID();
-        
-        for(int i = 0;i < Neighbors.length ; i++)
-        {
-            Country CurrentCountry = Map.getCountry(Neighbors[i]);
+        boolean res = false;
 
-            if(Neighbors[i] == _ToCountry.GetCountryID())
+        for(int i = 0;i < Neighbors.length ;i++)
+        {
+            if(!res)
             {
-                return true;
-            }
-            else if(!CurrentCountry.GetChecked())
-            {
-                return CheckConnection(CurrentCountry, _ToCountry);
-            }
-            else
-            {
-                return false;
+                Country CurrentCountry = Map.getCountry(Neighbors[i]);
+
+                if(Neighbors[i] == _ToCountry.GetCountryID() && CurrentCountry.GetOwnerId() == TurnManager.CurrentPlayer.getPlayerID())
+                {
+                    System.out.println("True");
+                    res = true;
+                }
+                else if(!CurrentCountry.GetChecked() && CurrentCountry.GetOwnerId() == TurnManager.CurrentPlayer.getPlayerID())
+                {
+                    System.out.println("Check");
+                    if(CheckConnection(CurrentCountry, _ToCountry))
+                    {
+                        res = true;
+                    }
+                }
+                else
+                {
+                    System.out.println("False");
+                    res = false;
+                }
             }
         }
 
-        return false;
+        return res;
     }
 
     public static boolean CheckMove()
@@ -112,6 +123,13 @@ public class TurnManager {
         }
     }
 
+    public static void CleanCheck()
+    {
+        for(int i = 0; i < Map.countries.size();i++)
+        {
+            Map.countries.get(i).SetChecked(false);
+        }
+    }
 //#endregion
 
 //#region War

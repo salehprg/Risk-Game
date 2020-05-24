@@ -64,13 +64,15 @@ public class Map {
     {
         String CountryNames[] = Data.CountryName;
 
+        
         for(int i = 0; i < CountryNames.length;i++)
         {
-            String CurrentContinent =CountryNames[i].split("\\.")[0];
+            String CurrentContinent = CountryNames[i].split("\\.")[0];
 
             Country NewCountry = new Country();
             NewCountry.CountryID = i;
             NewCountry.SetOwnerId(-1);
+            NewCountry.SetNeighborsID(Data.NeighbourId[(i * 2) + 1]);
 
             countries.add(NewCountry);
 

@@ -25,4 +25,9 @@ public class GameData {
             UIManager.UpdateMapInfo(TurnManager.getSecondCountrySelected());
         }
     }
+
+    public static void UpdateInfo()
+    {
+        
+    }
 }

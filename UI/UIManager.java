@@ -71,7 +71,7 @@ public class UIManager {
         JLabel SoldierCount = new JLabel(String.valueOf(_country.GetSoldierCount()));
         CountryButton.setLayout(null);
 
-        SoldierCount.setBounds((CountryButton.getWidth() - 10) / 2 , (CountryButton.getHeight() - 10) / 2 , 10, 10);
+        SoldierCount.setBounds((CountryButton.getWidth() - 10) / 2 , (CountryButton.getHeight() - 10) / 2 , 20, 10);
         SoldierCount.setLayout(null);
 
         CountryButton.add(SoldierCount , null);
