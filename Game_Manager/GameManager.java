@@ -1,6 +1,7 @@
 package Game_Manager;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import Game_Manager.Game_Data.GameData;
@@ -8,6 +9,7 @@ import Game_Manager.Turn.*;
 import Map.Country;
 import Map.Map;
 import PlayerManager.Player;
+import PlayerManager.PlayerManager.PlayerColor;
 import UI.InputModel;
 import UI.UIManager;
 import UI.UIUtilities;
@@ -17,7 +19,6 @@ public class GameManager {
     //public static SoldierManager SoldierManager;
     //public static WarManger warManger;
     public static TurnManager turnManager;
-    public static Move move;
 
     GameData gameData;
     UIManager uiManager;
@@ -29,27 +30,34 @@ public class GameManager {
         War
     }
 
-    public static State CurrentState = State.DeploySoldier;
-
-    
-    public GameManager(List<Player> players)
+    public GameManager (UIManager _uiManager)
     {
-        // SoldierManager = new SoldierManager();
-        // warManger = new WarManger();
-        turnManager = new TurnManager(players  , this);
-        move = new Move();
-        //gameData = new GameData(TurnManager);
-
-        uiManager = new UIManager(this);
+        uiManager = _uiManager;
     }
 
-    public void InitializeGame()
-    {
-        int NumbersPlayers = 2;
+    public static State CurrentState = State.DeploySoldier;
 
+    public void InitializeGame(int PlayerNumbers)
+    {
+        List<Player> players = new ArrayList<Player>();
+        
+        Player player1 = new Player(0, "PlayerName", PlayerColor.Blue);
+        Player player2 = new Player(1, "Player2",  PlayerColor.Red);
+
+        player1.setUnimployedSoldiersCount(4);
+        player2.setUnimployedSoldiersCount(6);
+        players.add(player1);
+        players.add(player2);
+
+        turnManager = new TurnManager(players  , this);
+
+        //SoldierManager.Initialize(PlayerNumbers);
         Map.Initialize();
         turnManager.NextTurn();
 
+        uiManager.InitializeGame();
+
+        GameData.UpdateGameInfo();
     }
 
 
@@ -66,6 +74,7 @@ public class GameManager {
     public static void ChangeState(State _State)
     {
         CurrentState = _State;
+        GameData.UpdateGameInfo();
     }
 
     //passData == true ==> ersal data //passData == false ==> roye keshvar click shode
@@ -119,9 +128,7 @@ public class GameManager {
                                 CurrentState = State.Move;
                                 //turnManager.NextTurn();
                             }
-
-                            GameData.UpdateGameInfo();
-                            GameData.UpdateMapInfo();
+                            
                             TurnManager.ClearSelectedCountry();
                         }
                         else
@@ -146,7 +153,7 @@ public class GameManager {
 
                         if(TurnManager.getSecondCountrySelected() != null)
                         {
-                            if(TurnManager.CheckMove())
+                            if(MoveManager.CheckMove())
                             {
                                 InputModel dialogModel = new InputModel();
                                 dialogModel.FirstCountry = TurnManager.getFirstCountrySelected();
@@ -168,9 +175,10 @@ public class GameManager {
 
                         if(SoldierManager.MoveSoldier(SoldierToMove))
                         {
-                            GameData.UpdateMapInfo();
+                            //GameData.UpdateMapInfo();
+                            //GameData.UpdateGameInfo();
                             TurnManager.ClearSelectedCountry();
-                            TurnManager.CleanCheck();
+                            MoveManager.CleanCheck();
                         }
                         else
                         {
@@ -195,10 +203,9 @@ public class GameManager {
                             TurnManager.SetCountrySelected(_Country);
                         }
                         
-                        
                         if(TurnManager.getSecondCountrySelected() != null)
                         {
-                            if(TurnManager.CheckWar())
+                            if(WarManger.CheckConnection())
                             {
                                 InputModel dialogModel = new InputModel();
                                 dialogModel.FirstCountry = TurnManager.getFirstCountrySelected();
@@ -211,22 +218,50 @@ public class GameManager {
                     }
                     else
                     {
-                        
-                        int AttackerSoldier = WarManger.DoWar(dataModel.AttackerSoldier , TurnManager.getSecondCountrySelected().GetSoldierCount());
-                        if(AttackerSoldier > 0)  // It Means Attacker Win
+                        if(WarManger.CheckWar(dataModel.AttackerSoldier))
                         {
-                            TurnManager.AddDefenderCountryToAttackerCountry();
-                            SoldierManager.MoveSoldier(AttackerSoldier);
+                            OutputResult res = WarManger.DoWar(dataModel.AttackerSoldier , TurnManager.getSecondCountrySelected().GetSoldierCount());
+                            if(res != null)
+                            {
+                                InputModel dialogModel = new InputModel();
+                                dialogModel.FirstCountry = TurnManager.getFirstCountrySelected();
+                                dialogModel.SecondCountry = TurnManager.getSecondCountrySelected();
+                                dialogModel.AttackerSoldier = TurnManager.getFirstCountrySelected().GetSoldierCount() - 1;
+                                dialogModel.DfndDiceNumber = res.DefenderDiceNumbers;
+                                dialogModel.AttckDiceNumber = res.AttackerDiceNumbers;
+
+                                uiManager.OpenWarResult_Dialog(dialogModel);
+
+                                if(res.AttckSoldier > 0)  // It Means Attacker Win
+                                {
+                                    TurnManager.AddDefenderCountryToAttackerCountry();
+                                    SoldierManager.MoveSoldier(res.AttckSoldier);
+                                }
+                            }
+
+                            // GameData.UpdateMapInfo();
+                            // GameData.UpdateGameInfo();
+                            TurnManager.ClearSelectedCountry();
                         }
-                        
-                        GameData.UpdateMapInfo();
-                        TurnManager.ClearSelectedCountry();
+                        else
+                        {
+                            InputModel dialogModel = new InputModel();
+                            dialogModel.FirstCountry = TurnManager.getFirstCountrySelected();
+                            dialogModel.SecondCountry = TurnManager.getSecondCountrySelected();
+                            dialogModel.AttackerSoldier = TurnManager.getFirstCountrySelected().GetSoldierCount() - 1;
+
+                            uiManager.OpenWar_Dialog(dialogModel);
+                        }
                     }
 
                     //turnManager.NextTurn();
 
                     break;
             }
+            
+            GameData.UpdateMapInfo();
+            GameData.UpdateGameInfo();
+            
         }
         catch(Exception ex){
             TurnManager.ClearSelectedCountry();

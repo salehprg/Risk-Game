@@ -28,7 +28,45 @@ public class UICreator {
         AppPath = Data.GetAppPath();
     }
 
-    public JFrame Initialize() 
+
+
+//#region MainMenu
+public JFrame InitializeMainMenu() 
+    {
+        JFrame frame = new JFrame("Risk Game");
+
+        // frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        // frame.setUndecorated(true);
+        // frame.setVisible(true);
+
+        frame.setSize(1000, 600);   
+        
+        
+        int ScreenWidth = frame.getBounds().width;
+        int ScreenHeight = frame.getBounds().height;
+
+        JButton startbtn = new JButton("Start");
+        startbtn.setBounds((ScreenWidth - 100) / 2, (ScreenHeight - 50) / 2, 100, 50);
+        
+        startbtn.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                gameManager.InitializeGame(2);
+                frame.setVisible(false);
+            }
+        });
+
+        frame.getContentPane().add(startbtn);   
+        frame.setLayout(null);
+        frame.setVisible(true);    
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+
+        return frame;
+
+    }         
+//#endregion
+
+//#region Main game UI
+    JFrame InitializeMainGame() 
     {
         JFrame frame = new JFrame("Risk Game");
 
@@ -82,16 +120,21 @@ public class UICreator {
         for(int i = 0; i < players.size(); i++)
         {
             Player SelectedPlayer = players.get(i);
+
             JLabel playerName = new JLabel(SelectedPlayer.getPlayerName());
-            
-            playerName.setBounds(20 + i * 100, 5, 100, 40);
+            playerName.setBounds(20 + i * 160, 5, 150, 40);
 
             JLabel UnEmpSoldierCount = new JLabel(String.valueOf(SelectedPlayer.getUnimployedSoldiersCount()));
-            UnEmpSoldierCount.setBounds(20 + i * 100, 20, 50, 40);
+            UnEmpSoldierCount.setBounds(20 + i * 160, 30, 50, 20);
+
+            JLabel playerCountryCount = new JLabel("0");
+            playerCountryCount.setBounds(50 + i * 160, 30, 50, 20);
 
             Data.PlayerNameLabels.add(playerName);
             Data.PlayerSoldierLabels.add(UnEmpSoldierCount);
+            Data.PlayerCountryCount.add(playerCountryCount);
 
+            _frame.add(playerCountryCount , null);
             _frame.add(playerName , null);
             _frame.add(UnEmpSoldierCount , null);
         }
@@ -152,7 +195,6 @@ public class UICreator {
         return panel;
     }
 
-
     void CountryClick(int CountryId)
     {
         Country ClickedCountry = Map.getCountry(CountryId);      
@@ -176,6 +218,7 @@ public class UICreator {
 
         return finishTurnBtn;
     }
+//#endregion
 
 
 }

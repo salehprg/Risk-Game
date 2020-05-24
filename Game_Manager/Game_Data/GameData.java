@@ -2,12 +2,14 @@ package Game_Manager.Game_Data;
 
 import Game_Manager.Turn.TurnManager;
 import Map.Country;
+import Map.Map;
 import PlayerManager.Player;
+import PlayerManager.PlayerManager;
 import UI.Data;
 import UI.UIManager;
 
 public class GameData {
-
+    
 
     public static void UpdateGameInfo()
     {
@@ -16,13 +18,41 @@ public class GameData {
 
     public static void UpdateMapInfo()
     {
-        if(TurnManager.getFirstCountrySelected() != null)
+        int PlayerId = -1;
+        boolean PlayerWin = true;
+
+        for(int i = 0;i < PlayerManager.getPlayers().size();i++)
         {
-            UIManager.UpdateMapInfo(TurnManager.getFirstCountrySelected());
+            PlayerManager.getPlayer(i).SetCountriesCount(0);
         }
-        if(TurnManager.getSecondCountrySelected() != null)
+
+        for(int i = 0; i < Map.countries.size(); i++)
         {
-            UIManager.UpdateMapInfo(TurnManager.getSecondCountrySelected());
+            int SelectedCountryOwnerId = Map.countries.get(i).GetOwnerId();
+
+            if(SelectedCountryOwnerId != -1)
+            {
+                
+                PlayerManager.getPlayer(SelectedCountryOwnerId).AddCountriesCount(1);
+
+                if(PlayerId == -1)
+                {
+                    PlayerId = Map.countries.get(i).GetOwnerId();
+                }
+                else
+                {
+                    if(PlayerId != Map.countries.get(i).GetOwnerId())
+                    {
+                        PlayerWin = false;
+                    }
+                }
+                UIManager.UpdateMapInfo(Map.countries.get(i));
+            }
+        }
+
+        if(PlayerWin)
+        {
+            System.out.println(TurnManager.getCurrentPlayer().getPlayerName() + " Win !");
         }
     }
 
@@ -30,4 +60,5 @@ public class GameData {
     {
         
     }
+    
 }

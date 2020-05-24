@@ -7,6 +7,7 @@ public class Country
         int CountryID ;//کشورID
         int NeighborsID [];//کشور های مجاورID
         boolean Checked; //برای چک کردن راه ارتباطی
+        boolean Selected; //چک کردن در حالت انتخاب یا نه
         
         public boolean GetChecked()
         {
@@ -17,6 +18,14 @@ public class Country
             Checked = _Checked;
         }
 
+        public boolean GetSelected()
+        {
+            return Selected;
+        }
+        public void SetSelected(Boolean _Selected)
+        {
+            Selected = _Selected;
+        }
 
         public int GetOwnerId()
         {

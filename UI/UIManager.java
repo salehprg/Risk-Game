@@ -25,16 +25,22 @@ public class UIManager {
     int result = -1;
     boolean Opened = false;
 
-    public UIManager(GameManager _gameManager)
+    public UIManager()
     {
+        GameManager _gameManager = new GameManager(this);
         gameManager = _gameManager;
         uiCreator = new UICreator(_gameManager);
         uiUtilities = new UIUtilities(this);
     }
 
-    public void Initialize()
+    public void InitializeMenu()
     {
-        frame = uiCreator.Initialize();
+        frame = uiCreator.InitializeMainMenu();
+    }
+
+    public void InitializeGame()
+    {
+        frame = uiCreator.InitializeMainGame();
     }
 
     public static void UpdateMapInfo(Country _country)
@@ -71,10 +77,19 @@ public class UIManager {
         JLabel SoldierCount = new JLabel(String.valueOf(_country.GetSoldierCount()));
         CountryButton.setLayout(null);
 
-        SoldierCount.setBounds((CountryButton.getWidth() - 10) / 2 , (CountryButton.getHeight() - 10) / 2 , 20, 10);
+        SoldierCount.setBounds((CountryButton.getWidth() - 12) / 2 , (CountryButton.getHeight() - 10) / 2 , 20, 10);
         SoldierCount.setLayout(null);
 
         CountryButton.add(SoldierCount , null);
+
+        if(_country.GetSelected())
+        {
+            JLabel selected = new JLabel("^");
+            selected.setLayout(null);
+            selected.setBounds((CountryButton.getWidth()) / 2 , (CountryButton.getHeight() - 10) / 2 , 20, 10);
+            CountryButton.add(selected , null);
+        }
+
         Data.buttons.set(_country.GetCountryID(), CountryButton);
     }
     
@@ -84,17 +99,20 @@ public class UIManager {
 
         if(Data.PlayerSoldierLabels.size() != 0)
         {
+            
             for(int i = 0; i < players.size(); i++)
             {
                 Player SelectedPlayer = players.get(i);
                 JLabel playerName = Data.PlayerNameLabels.get(i);
                 JLabel playerUnEmSoldier = Data.PlayerSoldierLabels.get(i);
+                JLabel playerCountrycount = Data.PlayerCountryCount.get(i);
 
                 playerUnEmSoldier.setText(String.valueOf(SelectedPlayer.getUnimployedSoldiersCount()));
+                playerCountrycount.setText(String.valueOf(SelectedPlayer.getCountriesCount()));
 
                 if(SelectedPlayer.GetIsActive())
                 {
-                    playerName.setText(SelectedPlayer.getPlayerName() + "^");
+                    playerName.setText(SelectedPlayer.getPlayerName() + "^" + GameManager.CurrentState);
                 }
                 else
                 {
@@ -113,6 +131,11 @@ public class UIManager {
     public void OpenWar_Dialog(InputModel input)
     {
         uiUtilities.OpenWarDialog(input);
+    }
+
+    public void OpenWarResult_Dialog(InputModel input)
+    {
+        uiUtilities.OpenWarResultDialog(input);
     }
 
     public void OpenSoldierMoveInput_Dialog(InputModel input)

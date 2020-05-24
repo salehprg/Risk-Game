@@ -16,23 +16,9 @@ public class MyRBG {
     }
 
     public static void main(String[] args) {
-        List<Player> players = new ArrayList<Player>();
-        
-        Player player1 = new Player(0, "PlayerName", PlayerColor.Blue, 0);
-        Player player2 = new Player(1, "Player2",  PlayerColor.Red, 0);
 
-        player1.setUnimployedSoldiersCount(4);
-        player2.setUnimployedSoldiersCount(6);
-        players.add(player1);
-        players.add(player2);
+        UIManager uiManager = new UIManager();
+        uiManager.InitializeMenu();
 
-
-        GameManager gameManager = new GameManager(players);
-        gameManager.InitializeGame();
-
-        UIManager uiManager = new UIManager(gameManager);
-        uiManager.Initialize();
-
-        GameData.UpdateGameInfo();
     }
 }

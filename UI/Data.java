@@ -23,6 +23,7 @@ public class Data {
 
     public static List<JLabel> PlayerNameLabels = new ArrayList<JLabel>();
     public static List<JLabel> PlayerSoldierLabels = new ArrayList<JLabel>();
+    public static List<JLabel> PlayerCountryCount = new ArrayList<JLabel>();
 
     public static List<JButton> buttons = new ArrayList<JButton>();
  

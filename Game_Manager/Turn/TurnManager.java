@@ -2,6 +2,8 @@ package Game_Manager.Turn;
 
 import java.util.List;
 
+import javax.swing.JLabel;
+
 import Game_Manager.GameManager;
 import Game_Manager.GameManager.State;
 import Game_Manager.Game_Data.GameData;
@@ -9,6 +11,7 @@ import Map.Country;
 import Map.Map;
 import PlayerManager.*;
 import UI.Data;
+import UI.UIManager;
 
 public class TurnManager {
     static Player CurrentPlayer;
@@ -18,7 +21,6 @@ public class TurnManager {
     
     static Country FirstCountrySelected , SecondCountrySelected;
 
-
     public TurnManager(List<Player> player , GameManager _gameManager)
     {
         playerManager = new PlayerManager(player);    
@@ -27,8 +29,9 @@ public class TurnManager {
 
     public static List<Player> getPlayerList()
     {
-        return playerManager.getPlayers();
+        return PlayerManager.getPlayers();
     }
+    
     public static Player getCurrentPlayer()
     {
         return CurrentPlayer;
@@ -45,20 +48,28 @@ public class TurnManager {
 
         if(CurrentId + 1 > playerManager.getPlayerLastIndex())
         {
-            CurrentPlayer = playerManager.getPlayer(0);
+            CurrentPlayer = PlayerManager.getPlayer(0);
         }
         else
         {
-            CurrentPlayer = playerManager.getPlayer(CurrentId + 1);
+            CurrentPlayer = PlayerManager.getPlayer(CurrentId + 1);
         }
 
-        CurrentPlayer.setUnimployedSoldiersCount(4);
-        CurrentPlayer.setIsActive(true);  // New Player
+        if(!CurrentPlayer.getIsLost())
+        {
+            CurrentPlayer.setUnimployedSoldiersCount(4);
+            CurrentPlayer.setIsActive(true);  // New Player
 
-        GameManager.ChangeState(State.DeploySoldier);
-        
-        GameData.UpdateGameInfo();
-        ClearSelectedCountry();
+            GameManager.ChangeState(State.DeploySoldier);
+            
+            GameData.UpdateGameInfo();
+            ClearSelectedCountry();
+            GameData.UpdateMapInfo();
+        }
+        else
+        {
+            NextTurn();
+        }
     }
 
 
@@ -75,89 +86,18 @@ public class TurnManager {
 
 //#region Move
 
-    public static boolean CheckConnection(Country _FromCountry , Country _ToCountry)
-    {
-        _FromCountry.SetChecked(true);
-        int[] Neighbors = _FromCountry.GetNeighborsID();
-        boolean res = false;
-
-        for(int i = 0;i < Neighbors.length ;i++)
-        {
-            if(!res)
-            {
-                Country CurrentCountry = Map.getCountry(Neighbors[i]);
-
-                if(Neighbors[i] == _ToCountry.GetCountryID() && CurrentCountry.GetOwnerId() == TurnManager.CurrentPlayer.getPlayerID())
-                {
-                    System.out.println("True");
-                    res = true;
-                }
-                else if(!CurrentCountry.GetChecked() && CurrentCountry.GetOwnerId() == TurnManager.CurrentPlayer.getPlayerID())
-                {
-                    System.out.println("Check");
-                    if(CheckConnection(CurrentCountry, _ToCountry))
-                    {
-                        res = true;
-                    }
-                }
-                else
-                {
-                    System.out.println("False");
-                    res = false;
-                }
-            }
-        }
-
-        return res;
-    }
-
-    public static boolean CheckMove()
-    {
-        if(FirstCountrySelected.GetOwnerId() != CurrentPlayer.getPlayerID() || SecondCountrySelected.GetOwnerId() != CurrentPlayer.getPlayerID())
-        {
-            return false;
-        }
-        else
-        {
-            return CheckConnection(FirstCountrySelected, SecondCountrySelected);
-        }
-    }
-
-    public static void CleanCheck()
-    {
-        for(int i = 0; i < Map.countries.size();i++)
-        {
-            Map.countries.get(i).SetChecked(false);
-        }
-    }
+    
 //#endregion
 
 //#region War
 
-    public static boolean CheckWar()
-    {
-        if(FirstCountrySelected.GetOwnerId() != CurrentPlayer.getPlayerID())
-        {
-            return false;
-        }
-        else
-        {
-            int[] AttackerNeighbour = FirstCountrySelected.GetNeighborsID();
-
-            for(int i = 0; i < AttackerNeighbour.length; i++)
-            {
-                if(AttackerNeighbour[i] == SecondCountrySelected.GetCountryID())
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
+    
 
     public static void AddDefenderCountryToAttackerCountry()
     {
+        PlayerManager.getPlayer(SecondCountrySelected.GetOwnerId()).AddCountriesCount(-1);
         SecondCountrySelected.SetOwnerId(CurrentPlayer.getPlayerID());
+        CurrentPlayer.AddCountriesCount(1);
     }
 
 //#endregion
@@ -176,21 +116,25 @@ public class TurnManager {
             if(SecondCountrySelected != null && _Country.GetCountryID() == SecondCountrySelected.GetCountryID())
             {
                 SecondCountrySelected = null;
+                SecondCountrySelected.SetSelected(false);
                 return;
             }
             if(FirstCountrySelected != null && _Country.GetCountryID() == FirstCountrySelected.GetCountryID())
             {
                 FirstCountrySelected = null;
+                FirstCountrySelected.SetSelected(false);
                 return;
             }
 
             if(FirstCountrySelected == null)
             {
                 FirstCountrySelected = _Country;
+                FirstCountrySelected.SetSelected(true);
             }
             else
             {
                 SecondCountrySelected = _Country;
+                SecondCountrySelected.SetSelected(true);
             }
         }
         else
@@ -201,12 +145,24 @@ public class TurnManager {
 
     public static void ClearSelectedCountry()
     {
+        if(FirstCountrySelected != null)
+        {
+            FirstCountrySelected.SetSelected(false);
+        }
+        if(SecondCountrySelected != null)
+        {
+            SecondCountrySelected.SetSelected(false);
+        }
+
         FirstCountrySelected = null;
         SecondCountrySelected = null;
+        
     }
+    
     public static Country getFirstCountrySelected() {
         return FirstCountrySelected;
     }
+    
     public static Country getSecondCountrySelected() {
         return SecondCountrySelected;
     }

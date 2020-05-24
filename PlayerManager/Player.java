@@ -9,15 +9,14 @@ public class Player {
     private int CountriesCount ;
     private int UnimployedSoldiersCount ;
     private boolean IsActive ;
-    private int Status ;
+    private boolean Lost ;
     
     
-   public Player(int PlayerID, String PlayerName, PlayerColor PlayerColor, int CountriesCount )
+   public Player(int PlayerID, String PlayerName, PlayerColor PlayerColor)
    {
        setPlayerID(PlayerID);
        setPlayerName(PlayerName);
        setPlayerColor(PlayerColor);
-       setCountriesCount(CountriesCount);
        setUnimployedSoldiersCount(0);
        setIsActive(false);
    }
@@ -35,8 +34,12 @@ public class Player {
         this.PlayerColor = PlayerColor;
     }
 
-    public void setCountriesCount(int CountriesCount) {
+    public void SetCountriesCount(int CountriesCount) {
         this.CountriesCount = CountriesCount;
+    }
+
+    public void AddCountriesCount(int CountriesCount) {
+        this.CountriesCount += CountriesCount;
     }
 
     public void setUnimployedSoldiersCount(int UnimployedSoldiersCount) {
@@ -47,8 +50,8 @@ public class Player {
         this.IsActive = IsActive;
     }
 
-    public void setStatus(int Status) {
-        this.Status = Status;
+    public void setStatus(boolean IsLost) {
+        this.Lost = IsLost;
     }
 
     public int getPlayerID() {
@@ -75,7 +78,7 @@ public class Player {
         return IsActive;
     }
 
-    public int getStatus() {
-        return Status;
+    public boolean getIsLost() {
+        return Lost;
     }
 }

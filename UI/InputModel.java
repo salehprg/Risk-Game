@@ -1,5 +1,7 @@
 package UI;
 
+import java.util.ArrayList;
+
 import Map.Country;
 
 public class InputModel {
@@ -17,6 +19,9 @@ public int MoveSoldier;
 //#region War
     public int DefenderSoldier;
     public int AttackerSoldier;
+
+    public ArrayList<Integer> DfndDiceNumber;
+    public ArrayList<Integer> AttckDiceNumber;
 //#endregion
 
 

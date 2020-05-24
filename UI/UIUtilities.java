@@ -95,6 +95,79 @@ public class UIUtilities {
         dialog.add(buttonClose , null);
         dialog.add(backgroundImage , null);
 
+        dialog.getRootPane().setDefaultButton(buttonOk);
+        dialog.setLayout(null);
+        
+        dialog.setVisible(true);
+    }
+
+    public void OpenWarResultDialog(InputModel input)
+    {
+        frameWidth = uiManager.getFrame().getWidth();
+        frameHeight = uiManager.getFrame().getHeight();
+        
+        JFrame dialog = new JFrame();
+        dialog.setUndecorated(true);
+        dialog.setSize(400, 400);
+        dialog.setLocationRelativeTo(null);   //Center Screen
+
+        ImageIcon BoardGameIcon = new ImageIcon(AppPath + "\\UI\\Images\\BoardGame\\Letter.png");
+        JLabel backgroundImage = new JLabel();
+        backgroundImage.setIcon(new ImageIcon(BoardGameIcon.getImage().getScaledInstance(dialog.getWidth(), dialog.getHeight() ,java.awt.Image.SCALE_SMOOTH)));
+        backgroundImage.setBounds(0, 0, dialog.getWidth(), dialog.getHeight());
+
+        JLabel FromCountry = new JLabel("From " + String.valueOf(input.FirstCountry.GetCountryID()) + 
+                                        " To " + String.valueOf(input.SecondCountry.GetCountryID()));
+        FromCountry.setBounds(60, 50, 150, 20);
+
+        JLabel Attackerlbl = new JLabel("Soldier Attacker : " + String.valueOf(input.AttackerSoldier));
+        Attackerlbl.setBounds(60, 70, 200, 20);
+
+        JButton buttonOk = new JButton("Ok");
+        buttonOk.setBounds(160, 310, 60, 30);
+        //buttonOk.setBorderPainted(false);
+        buttonOk.setContentAreaFilled(false);
+        buttonOk.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        buttonOk.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                        result = new InputModel();
+                        result.IsExited = true;
+                        uiManager.SetDialogResult(result);
+                        dialog.setVisible(false);  
+                    }  
+                }); 
+
+        for(int i = 0;i < input.AttckDiceNumber.size();i++)
+        {
+            ImageIcon DiceNumIcon = new ImageIcon(AppPath + "\\UI\\Images\\Attck" + String.valueOf(input.AttckDiceNumber.get(i)) + ".png");
+            JLabel DiceImage = new JLabel();
+            DiceImage.setIcon(new ImageIcon(DiceNumIcon.getImage().getScaledInstance(60, 60 ,java.awt.Image.SCALE_SMOOTH)));
+            DiceImage.setBounds(140, 100 + i * 70, 60, 60);
+
+            dialog.add(DiceImage);
+        }
+
+        for(int i = 0;i < input.DfndDiceNumber.size();i++)
+        {
+            ImageIcon DiceNumIcon = new ImageIcon(AppPath + "\\UI\\Images\\Dfnd" + String.valueOf(input.DfndDiceNumber.get(i)) + ".png");
+            JLabel DiceImage = new JLabel();
+            DiceImage.setIcon(new ImageIcon(DiceNumIcon.getImage().getScaledInstance(60, 60 ,java.awt.Image.SCALE_SMOOTH)));
+            DiceImage.setBounds(210, 100 + i * 70, 60, 60);
+
+            dialog.add(DiceImage);
+        }
+        
+        dialog.setBackground(new Color(0,0,0,0));
+
+
+        dialog.add(FromCountry , null);
+
+        dialog.add(Attackerlbl , null);
+        
+        dialog.add(buttonOk , null);
+        dialog.add(backgroundImage , null);
+        dialog.getRootPane().setDefaultButton(buttonOk);
         dialog.setLayout(null);
         
         dialog.setVisible(true);
@@ -124,6 +197,7 @@ public class UIUtilities {
 
         JButton buttonOk = new JButton("Ok");
         buttonOk.setBounds(30, 80, 60, 30);
+        
         //buttonOk.setBorderPainted(false);
         buttonOk.setContentAreaFilled(false);
         buttonOk.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -165,6 +239,7 @@ public class UIUtilities {
         dialog.add(buttonClose , null);
         dialog.add(backgroundImage , null);
 
+        dialog.getRootPane().setDefaultButton(buttonOk);
         dialog.setLayout(null);
         
         dialog.setVisible(true);
@@ -239,7 +314,8 @@ public class UIUtilities {
         dialog.add(buttonOk , null);
         dialog.add(buttonClose , null);
         dialog.add(backgroundImage , null);
-
+        
+        dialog.getRootPane().setDefaultButton(buttonOk);
         dialog.setLayout(null);
         
         dialog.setVisible(true);
