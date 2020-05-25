@@ -48,8 +48,6 @@ public class UIManager {
         }
     }
 
-    public
-
     public void InitializeGame()
     {
         frame = uiCreator.InitializeMainGame();
@@ -86,11 +84,11 @@ public class UIManager {
 
         // CountryButton.setIcon(new ImageIcon(CountryIcon.getImage().getScaledInstance(25 , CountryButton.getHeight() + 5 ,java.awt.Image.SCALE_SMOOTH)));
 
-        JLabel playerImg = new JLabel(new ImageIcon(CountryIcon.getImage().getScaledInstance(30 , CountryButton.getHeight() + 10 ,java.awt.Image.SCALE_SMOOTH)));
+        JLabel playerImg = new JLabel(new ImageIcon(CountryIcon.getImage().getScaledInstance(30 , CountryButton.getHeight()  ,java.awt.Image.SCALE_SMOOTH)));
         playerImg.setLayout(null);
         CountryButton.add(playerImg);
 
-        playerImg.setBounds(0, 0, 30, CountryButton.getHeight() + 10);
+        playerImg.setBounds(0, 0, 30, CountryButton.getHeight());
 
         JLabel SoldierCount = new JLabel(String.valueOf(_country.GetSoldierCount()));
         CountryButton.setLayout(null);
@@ -165,8 +163,7 @@ public class UIManager {
                     lblState.setText(SelectedPlayer.getPlayerName() + "^");
                     lblState.setIcon(new ImageIcon(PlayerState.getImage().getScaledInstance(20 , 30 ,java.awt.Image.SCALE_SMOOTH)));
                     //lblState.setLocation(frame.getWidth() * (Data.PlayerNameLabels.get(i).getX() + Data.PlayerNameLabels.get(i).getWidth() + 5) / Data.RefrenceX, frame.getHeight() * (Data.PlayerNameLabels.get(i).getY() + 35) / Data.RefrenceY);
-                    lblState.setLocation(UICreator.lblTopPanel.getWidth() * (playerName.getX()) / Data.RefrenceTopPanelX, UICreator.lblTopPanel.getHeight() * (playerName.getY()) / Data.RefrenceTopPanelY);
-
+                    lblState.setLocation(playerName.getX() + UICreator.lblTopPanel.getWidth() * (110) / Data.RefrenceTopPanelX, playerName.getY() + UICreator.lblTopPanel.getHeight() * (15) / Data.RefrenceTopPanelY);
 
                 }
                 else

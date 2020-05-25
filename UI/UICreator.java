@@ -47,7 +47,8 @@ IOException, LineUnavailableException
         // frame.setUndecorated(true);
         // frame.setVisible(true);
 
-        frame.setSize(1000, 600);
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
 
         try
         {
@@ -102,15 +103,21 @@ IOException, LineUnavailableException
         JFrame frame = new JFrame("Risk Game");
 
         frame.setSize(width, height);
+        frame.setLocationRelativeTo(null);
 
+        String AppPath = Data.GetAppPath();
+        ImageIcon PlayerIconImage = new ImageIcon();
+ 
         JPanel InfoPanel = new JPanel();
         InfoPanel.setLayout(null);
-        InfoPanel.setBounds((width - 400) / 2 , (height - 300) / 2 , 400, 300);
+        InfoPanel.setBounds((width - 400) / 2 , (height - 400) / 2 , 400, 400);
+        
 
-        JButton button2 = new JButton("2 Player");
-        button2.setBounds(30, 80, 120, 60);
-        button2.setForeground(Color.gray);
-        button2.setContentAreaFilled(true);
+        PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\PlayerCount2.png");
+        JButton button2 = new JButton();
+        button2.setBounds(150, 80, 120, 60);
+        button2.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(120, 60 ,java.awt.Image.SCALE_SMOOTH)));
+        button2.setContentAreaFilled(false);
         button2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         button2.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -118,10 +125,12 @@ IOException, LineUnavailableException
                     }
                 });
 
+
+        PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\PlayerCount3.png");
         JButton button3 = new JButton("3 Player");
-        button3.setBounds(160, 80, 120, 60);
-        button3.setForeground(Color.gray);
-        button3.setContentAreaFilled(true);
+        button3.setBounds(150, 160, 120, 60);
+        button3.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(120, 60 ,java.awt.Image.SCALE_SMOOTH)));
+        button3.setContentAreaFilled(false);
         button3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         button3.addActionListener(new ActionListener(){
@@ -131,10 +140,13 @@ IOException, LineUnavailableException
                 });
 
 
+
+        PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\PlayerCount4.png");
         JButton button4 = new JButton("4 Player");
-        button4.setBounds(290, 80, 120, 60);
-        button4.setForeground(Color.gray);
-        button4.setContentAreaFilled(true);
+        button4.setBounds(150, 240, 120, 60);
+        button4.setContentAreaFilled(false);
+        button4.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(120, 60 ,java.awt.Image.SCALE_SMOOTH)));
+        button4.setForeground(Color.black);
         button4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         button4.addActionListener(new ActionListener(){
@@ -151,6 +163,12 @@ IOException, LineUnavailableException
         InfoPanel.add(button4 , null);
 
 
+        PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\Panel.png");
+        JLabel panelBG = new JLabel(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(InfoPanel.getWidth(), InfoPanel.getHeight() ,java.awt.Image.SCALE_SMOOTH)));
+        panelBG.setLayout(null);
+        panelBG.setBounds(0, 0, InfoPanel.getWidth(), InfoPanel.getHeight());
+        InfoPanel.add(panelBG , null);
+
         frame.add(InfoPanel , null);
         frame.add(BackgroundImage(frame.getWidth(), frame.getHeight()));
 
@@ -164,7 +182,7 @@ IOException, LineUnavailableException
     ArrayList<JButton> Characters = new ArrayList<>();
     ArrayList<JTextField> PlayerName = new ArrayList<>();
 
-    public void PlayerListInfo(int PlayerNumber , JFrame _frame)
+    void PlayerListInfo(int PlayerNumber , JFrame _frame)
     {
         int width = _frame.getWidth();
         int height = _frame.getHeight();
@@ -173,7 +191,8 @@ IOException, LineUnavailableException
         JFrame frame = new JFrame("Risk Game");
 
         frame.setSize(width, height);
-
+        frame.setLocationRelativeTo(null);
+        
         JPanel InfoPanel = new JPanel();
         InfoPanel.setLayout(null);
         InfoPanel.setBounds(40,40 , width, height);
@@ -200,14 +219,24 @@ IOException, LineUnavailableException
         }
 
         JButton buttonOk = new JButton("Ok");
-        buttonOk.setBounds(30, 110, 60, 30);
+        buttonOk.setBounds(30, 50 + PlayerNumber * 120, 60, 30);
         //buttonOk.setBorderPainted(false);
-        buttonOk.setContentAreaFilled(false);
+        buttonOk.setContentAreaFilled(true);
         buttonOk.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         buttonOk.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
+                    boolean ValidData = true;
+                    for(int i = 0; i < PlayerCharId.size();i++)
+                    {
+                        if(PlayerCharId.get(i) == -1 || PlayerName.get(i).getText().trim() == "")
+                        {
+                            ValidData = false;
+                        }
+                    }
 
+                    if(ValidData)
+                    {
                         List<Player> players = new ArrayList<Player>();
                         PlayerColor color = PlayerColor.Black;
                         for(int i = 0; i < PlayerNumber;i++)
@@ -237,12 +266,15 @@ IOException, LineUnavailableException
                         }
         
                         gameManager.InitializeGame(PlayerNumber , players); 
-                    }  
-                });
+                        frame.setVisible(false);
+                    }
+                }  
+            });
 
         InfoPanel.setBackground(new Color(0,0,0,0));
 
         InfoPanel.add(lblplayerCount , null);
+        InfoPanel.add(buttonOk , null);
 
         frame.add(InfoPanel , null);
         frame.add(BackgroundImage(frame.getWidth(), frame.getHeight()));
@@ -432,8 +464,9 @@ IOException, LineUnavailableException
         frame.add(FinishMyTurn());
         frame.add(TopPanel);
 
-
+        
         CreatePlayerUI(TopPanel);
+        CreatePlayerCharacter(frame);
 
         frame.getContentPane().add(panel);
 
@@ -445,6 +478,45 @@ IOException, LineUnavailableException
         return frame;
 
     }
+    
+    void CreatePlayerCharacter(JFrame _frame)
+    {
+        List<Player> players = TurnManager.getPlayerList();
+
+        String AppPath = Data.GetAppPath();
+        ImageIcon PlayerIconImage = new ImageIcon();
+
+        for(int i = 0; i < players.size(); i++)
+        {
+            Player SelectedPlayer = players.get(i);
+            JLabel PlayerImage = new JLabel();
+            // Black = Hitler , Green = Musilini , 2 = Stalin , 3 = Churchil
+            switch (SelectedPlayer.getPlayerColor()) {
+                case Black:
+                    PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\hitler.jpg");
+                    break;
+            
+                case Green:
+                    PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\musilini.jpg");
+                    break;
+
+                case Red:
+                    PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\stalin.jpg");
+                    break;
+
+                case Blue:
+                    PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\churchil.jpg");
+                    break;
+                default:
+                    break;
+            }
+
+            PlayerImage.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(70, 50 ,java.awt.Image.SCALE_SMOOTH)));
+            PlayerImage.setBounds(Data.PlayerNameLabels.get(i).getX() + 50 , Data.PlayerNameLabels.get(i).getY() - 20, 70, 50);
+            _frame.add(PlayerImage , 0);
+        }
+
+    }
 
     void CreatePlayerUI(JLabel parent)
     {
@@ -452,6 +524,9 @@ IOException, LineUnavailableException
         int refrenceY = Data.RefrenceTopPanelY;
 
         List<Player> players = TurnManager.getPlayerList();
+
+        String AppPath = Data.GetAppPath();
+        ImageIcon PlayerIconImage = new ImageIcon();
 
         for(int i = 0; i < players.size(); i++)
         {
@@ -534,7 +609,7 @@ IOException, LineUnavailableException
             JButton CountryButton = new JButton();
             CountryButton.setActionCommand(String.valueOf(i));
 
-            CountryButton.setBounds(width * CountryBound[i][0] / RefrenceX - 15 , height * CountryBound[i][1] / RefrenceY , 50 , 20);
+            CountryButton.setBounds(width * CountryBound[i][0] / RefrenceX - 15 , height * CountryBound[i][1] / RefrenceY , 50 , 28);
 
             CountryButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             CountryButton.setContentAreaFilled(false);
@@ -562,10 +637,12 @@ IOException, LineUnavailableException
 
     JButton FinishMyTurn()
     {
-        JButton finishTurnBtn = new JButton("Next Turn");
-        finishTurnBtn.setBounds(100, 60, 120, 30);
-        finishTurnBtn.setForeground(Color.white);
+        ImageIcon BoardGameIcon = new ImageIcon(AppPath + "\\UI\\Images\\the final\\NextTurn.png");
+        
+        JButton finishTurnBtn = new JButton(new ImageIcon(BoardGameIcon.getImage().getScaledInstance(50, 50 ,java.awt.Image.SCALE_SMOOTH)));
+        finishTurnBtn.setBounds(lblTopPanel.getWidth() * (700) / Data.RefrenceTopPanelX, lblTopPanel.getHeight() * 50 / Data.RefrenceTopPanelY, 50, 50);
         finishTurnBtn.setContentAreaFilled(false);
+        finishTurnBtn.setBorderPainted(false);
         finishTurnBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         finishTurnBtn.addActionListener(new ActionListener(){

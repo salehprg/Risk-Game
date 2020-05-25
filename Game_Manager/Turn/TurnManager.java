@@ -14,7 +14,7 @@ public class TurnManager {
     static Player CurrentPlayer;
     static PlayerManager playerManager;
     static GameManager gameManager;
-    
+    public static int RoundNumber = 1;
     
     static Country FirstCountrySelected , SecondCountrySelected;
 
@@ -45,6 +45,7 @@ public class TurnManager {
 
         if(CurrentId + 1 > playerManager.getPlayerLastIndex())
         {
+            RoundNumber++;
             CurrentPlayer = PlayerManager.getPlayer(0);
         }
         else
@@ -54,7 +55,10 @@ public class TurnManager {
 
         if(!CurrentPlayer.getIsLost())
         {
-            CurrentPlayer.setUnimployedSoldiersCount(4);
+            if(RoundNumber != 1)
+            {
+                SoldierManager.GiveSoldierToPlayer(CurrentPlayer );
+            }
             CurrentPlayer.setIsActive(true);  // New Player
 
             GameManager.ChangeState(State.DeploySoldier);

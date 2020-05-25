@@ -22,6 +22,8 @@ public class Data {
 
     public static int RefrenceX = 800 , RefrenceY = 600;
     public static int RefrenceTopPanelX = 720 , RefrenceTopPanelY = 80;
+
+    public static List<JLabel> PlayerCharacter = new ArrayList<JLabel>();
     public static List<JLabel> PlayerNameLabels = new ArrayList<JLabel>();
     public static List<JLabel> PlayerSoldierLabels = new ArrayList<JLabel>();
     public static List<JLabel> PlayerCountryCount = new ArrayList<JLabel>();
@@ -47,7 +49,7 @@ public class Data {
         {428 , 386},          //14
         {469 , 390},          //15
         {440 , 447},          //16
-        {497 , 436},          //17
+        {505 , 436},          //17
         {330 , 112},          //18
         {420 , 110},          //19
         {367 , 162},          //20
@@ -68,10 +70,10 @@ public class Data {
         {702 , 215},          //35
         {524 , 193},          //36
         {651 , 358},          //37
-        {716 , 366},          //38
+        {721 , 366},          //38
         {684 , 442},          //39
         {724 , 444},          //40
-        {755 , 503},          //41
+        {758 , 503},          //41
         
     };
 

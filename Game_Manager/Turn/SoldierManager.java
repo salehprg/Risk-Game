@@ -9,10 +9,10 @@ import Map.Map;
 
 public class SoldierManager {
 
-    public static void GiveSoldierToPlayer(Player _Player)
+    public static void GiveSoldierToPlayer(Player _Player )
     {
+
         _Player.setUnimployedSoldiersCount(SoldiersByContinent(_Player) + SoldiersByCountries(_Player));
-        
     }
 
     public static boolean MoveSoldier(int _SoldierToMove)
@@ -138,6 +138,16 @@ public class SoldierManager {
                 }
             }
         }   
+
+        for(int i = 0;i < n;i++)
+        {
+            PlayerManager.getPlayer(i).setUnimployedSoldiersCount(remainingSoldierPlayer[i+1]);
+        }
+        for(int i = 0; i < 42;i++)
+        {
+            Map.countries.get(i).SetOwnerId(CountryID[i] - 1);
+            Map.countries.get(i).SetSoldierCount(1);
+        }
     }
 
     static int SoldiersByCountries(Player _Player)

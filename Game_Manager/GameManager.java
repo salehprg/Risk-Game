@@ -39,13 +39,15 @@ public class GameManager {
 
         turnManager = new TurnManager(players  , this);
 
-        //SoldierManager.Initialize(PlayerNumbers);
         Map.Initialize();
-        turnManager.NextTurn();
-
+        SoldierManager.Initialize(PlayerNumbers);
         uiManager.InitializeGame();
 
+        turnManager.NextTurn();
+
+
         GameData.UpdateGameInfo();
+        GameData.UpdateMapInfo();
     }
 
 
