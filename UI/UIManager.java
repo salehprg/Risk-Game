@@ -37,7 +37,15 @@ public class UIManager {
 
     public void InitializeMenu()
     {
-        frame = uiCreator.InitializeMainMenu();
+        try
+        {
+            frame = uiCreator.InitializeMainMenu();
+        }
+        catch(Exception ex)
+        {
+            System.out.println("Error with playing sound."); 
+            ex.printStackTrace(); 
+        }
     }
 
     public void InitializeGame()

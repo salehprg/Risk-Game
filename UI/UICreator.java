@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -38,7 +39,8 @@ public class UICreator {
 
 //#region MainMenu
 
-public JFrame InitializeMainMenu()
+public JFrame InitializeMainMenu() throws UnsupportedAudioFileException, 
+IOException, LineUnavailableException
     {
         JFrame frame = new JFrame("Risk Game");
 
@@ -48,17 +50,28 @@ public JFrame InitializeMainMenu()
 
         frame.setSize(1000, 600);
 
+        try
+        {
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File(AppPath + "//Resource//StartMenu.snd").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+        }
+        catch(IOException ex)
+        {
+
+        }
 
         int ScreenWidth = frame.getBounds().width;
         int ScreenHeight = frame.getBounds().height;
 
         ImageIcon startbtnIcon = new ImageIcon(AppPath + "\\UI\\Images\\the final\\start-normal.png");
-        JButton startbtn = new JButton(new ImageIcon(startbtnIcon.getImage().getScaledInstance(200, 100 ,java.awt.Image.SCALE_SMOOTH)));
-        startbtn.setBounds((ScreenWidth - 200) / 2, (ScreenHeight - 100) / 2, 200, 100);
+        JButton startbtn = new JButton(new ImageIcon(startbtnIcon.getImage().getScaledInstance(250, 100 ,java.awt.Image.SCALE_SMOOTH)));
+        startbtn.setBounds((ScreenWidth - 300) / 2, ScreenHeight - 100, 250, 100);
         startbtn.setRolloverEnabled(true);
 
         ImageIcon startbtnIconHover = new ImageIcon(AppPath + "\\UI\\Images\\the final\\start-hover.png");
-        startbtn.setRolloverIcon(new ImageIcon(startbtnIconHover.getImage().getScaledInstance(200, 100 ,java.awt.Image.SCALE_SMOOTH)));
+        startbtn.setRolloverIcon(new ImageIcon(startbtnIconHover.getImage().getScaledInstance(250, 100 ,java.awt.Image.SCALE_SMOOTH)));
 
         startbtn.setBorderPainted(false);
         startbtn.setContentAreaFilled(false);
@@ -73,7 +86,7 @@ public JFrame InitializeMainMenu()
         startbtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         frame.getContentPane().add(startbtn);
-        frame.add(BackgroundImage(ScreenWidth, ScreenHeight));
+        frame.add(StartMenuBGImage(ScreenWidth, ScreenHeight));
         frame.setLayout(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -325,6 +338,18 @@ public JFrame InitializeMainMenu()
             parent.add(playerName , null);
             parent.add(UnEmpSoldierCount , null);
         }
+    }
+
+    JLabel StartMenuBGImage(int Width , int Height)
+    {
+        ImageIcon BackGroundIcon = new ImageIcon(AppPath + "\\UI\\Images\\the final\\StartMenu.gif");
+        JLabel BackGround = new JLabel();
+        BackGround.setIcon(new ImageIcon(BackGroundIcon.getImage().getScaledInstance(Width, Height ,java.awt.Image.SCALE_DEFAULT)));
+        BackGroundIcon.setImageObserver(BackGround);
+        BackGround.setBounds(0, 0, Width , Height);
+        BackGround.setLayout(null);
+
+        return BackGround;
     }
 
     JLabel BackgroundImage(int Width , int Height)
