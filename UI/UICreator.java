@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
@@ -145,6 +146,7 @@ public JFrame InitializeMainMenu()
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    boolean Hitler , Churchil , Musilini , Stalin;
     public void PlayerListInfo(int Number , JFrame _frame)
     {
         int width = _frame.getWidth();
@@ -172,23 +174,7 @@ public JFrame InitializeMainMenu()
             JTextField textname = new JTextField();
             textname.setBounds(140, 20 + i * 30 , 100, 20);
 
-            JLabel PlayerIcon = new JLabel();
-            ImageIcon PlayerIconImage = new ImageIcon();
-            String AppPath = Data.GetAppPath();
-
-            PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\hitler.jpg");
-            PlayerIcon.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(50, 50 ,java.awt.Image.SCALE_SMOOTH)));
-            PlayerIcon.setBounds(180, 20 + i * 30, 50, 50);
-            InfoPanel.add(PlayerIcon);
-
-            PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\musilini.jpg");
-            PlayerIcon.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(50, 50 ,java.awt.Image.SCALE_SMOOTH)));
-            PlayerIcon.setBounds(240, 20 + i * 30, 50, 50);
-            InfoPanel.add(PlayerIcon);
-
-            PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\stalin.jpg");
-            PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\churchil.jpg");
-            
+            CreateSelectableCharacter(InfoPanel, i);
 
             InfoPanel.add(lblPlayerName);
             InfoPanel.add(textname);
@@ -204,6 +190,46 @@ public JFrame InitializeMainMenu()
         frame.setVisible(true);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    ArrayList<JButton> Characters;
+    void CreateSelectableCharacter(JPanel CharPanel , int playerId)
+    {
+        String AppPath = Data.GetAppPath();
+        ImageIcon PlayerIconImage = new ImageIcon();
+        
+        for(int i = 0;i< Characters.size();i++)
+        {
+            CharPanel.remove(Characters.get(i));
+        }
+
+        if(!Hitler)
+        {
+            PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\hitler.jpg");
+            JButton Hitler = new JButton();
+            Hitler.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(50, 50 ,java.awt.Image.SCALE_SMOOTH)));
+            Hitler.setBounds(180, 20 + playerId * 30, 50, 50);
+            CharPanel.add(Hitler);
+            Hitler.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                            CreateSelectableCharacter(CharPanel, playerId);
+                        }
+                    });
+
+            Characters.add(Hitler);
+        }
+
+        if(!Musilini)
+        {
+            PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\musilini.jpg");
+            JButton Musilini = new JButton();
+            Musilini.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(50, 50 ,java.awt.Image.SCALE_SMOOTH)));
+            Musilini.setBounds(180, 20 + playerId * 30, 50, 50);
+            CharPanel.add(Musilini);
+        }
+
+        PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\stalin.jpg");
+        PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\churchil.jpg");
     }
 
 //#endregion
