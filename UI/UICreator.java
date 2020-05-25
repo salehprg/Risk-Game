@@ -222,7 +222,11 @@ IOException, LineUnavailableException
             {
                 if(SelectedChar != -1)
                 {
-                    if(Characters.get(i).getActionCommand() == String.valueOf(SelectedChar))
+                    if(Integer.valueOf(Characters.get(i).getActionCommand()) == PlayerId)
+                    {
+                        CharPanel.remove(Characters.get(i));
+                    }
+                    if(Integer.valueOf(Characters.get(i).getName()) == SelectedChar)
                     {
                         CharPanel.remove(Characters.get(i));
                     }
@@ -236,6 +240,7 @@ IOException, LineUnavailableException
             PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\hitler.jpg");
             JButton HitlerBtn = new JButton();
             HitlerBtn.setActionCommand(String.valueOf(PlayerId));
+            HitlerBtn.setName("0");
 
             HitlerBtn.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(100, 100 ,java.awt.Image.SCALE_SMOOTH)));
             HitlerBtn.setBounds(180, 20 + PlayerId * 120, 100, 100);
@@ -250,6 +255,7 @@ IOException, LineUnavailableException
                         }
                     });
 
+            HitlerBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             Characters.add(HitlerBtn);
         }
 
@@ -258,6 +264,8 @@ IOException, LineUnavailableException
             PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\musilini.jpg");
             JButton MusiliniBtn = new JButton();
             MusiliniBtn.setActionCommand(String.valueOf(PlayerId));
+            MusiliniBtn.setName("1");
+
             MusiliniBtn.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(100, 100 ,java.awt.Image.SCALE_SMOOTH)));
             MusiliniBtn.setBounds(300, 20 + PlayerId * 120, 100, 100);
 
@@ -265,10 +273,14 @@ IOException, LineUnavailableException
 
             MusiliniBtn.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                            CreateSelectableCharacter(CharPanel, Integer.valueOf(e.getActionCommand()) , 1);
+                            int _PlayerId = Integer.valueOf(e.getActionCommand());
+                            PlayerCharId.set(_PlayerId, 1);
+                            Musilini = true;
+                            CreateSelectableCharacter(CharPanel, _PlayerId , 1);
                         }
                     });
 
+            MusiliniBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             Characters.add(MusiliniBtn);
         }
 
@@ -277,6 +289,8 @@ IOException, LineUnavailableException
             PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\stalin.jpg");
             JButton StalinBtn = new JButton();
             StalinBtn.setActionCommand(String.valueOf(PlayerId));
+            StalinBtn.setName("2");
+
             StalinBtn.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(100, 100 ,java.awt.Image.SCALE_SMOOTH)));
             StalinBtn.setBounds(420, 20 + PlayerId * 120, 100, 100);
 
@@ -284,10 +298,15 @@ IOException, LineUnavailableException
 
             StalinBtn.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
+                    int _PlayerId = Integer.valueOf(e.getActionCommand());
+                            PlayerCharId.set(_PlayerId, 2);
+                            Stalin = true;
+                            CreateSelectableCharacter(CharPanel, _PlayerId , 2);
                             CreateSelectableCharacter(CharPanel, Integer.valueOf(e.getActionCommand()) , 2);
                         }
                     });
 
+            StalinBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             Characters.add(StalinBtn);
         }
 
@@ -296,6 +315,8 @@ IOException, LineUnavailableException
             PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\churchil.jpg");
             JButton ChurchilBtn = new JButton();
             ChurchilBtn.setActionCommand(String.valueOf(PlayerId));
+            ChurchilBtn.setName("3");
+
             ChurchilBtn.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(100, 100 ,java.awt.Image.SCALE_SMOOTH)));
             ChurchilBtn.setBounds(540, 20 + PlayerId * 120, 100, 100);
 
@@ -303,10 +324,15 @@ IOException, LineUnavailableException
 
             ChurchilBtn.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
+                            int _PlayerId = Integer.valueOf(e.getActionCommand());
+                            PlayerCharId.set(_PlayerId, 3);
+                            Churchil = true;
+                            CreateSelectableCharacter(CharPanel, _PlayerId , 3);
                             CreateSelectableCharacter(CharPanel, Integer.valueOf(e.getActionCommand()) , 3);
                         }
                     });
 
+            ChurchilBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             Characters.add(ChurchilBtn);
         }
 
