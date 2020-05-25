@@ -219,7 +219,7 @@ IOException, LineUnavailableException
         }
 
         JButton buttonOk = new JButton("Ok");
-        buttonOk.setBounds(30, 50 + PlayerNumber * 120, 60, 30);
+        buttonOk.setBounds(30, 50 + PlayerNumber * 105, 60, 30);
         //buttonOk.setBorderPainted(false);
         buttonOk.setContentAreaFilled(true);
         buttonOk.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
