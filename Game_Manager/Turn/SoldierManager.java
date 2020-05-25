@@ -62,7 +62,7 @@ public class SoldierManager {
     
     public static void Initialize(int n)
     {
-        int [] CountryID = new int [41] ;//ID player owner dar khane haye arraye gharar migirnd
+        int [] CountryID = new int [42] ;//ID player owner dar khane haye arraye gharar migirnd
         int limit = 42 / n ;//had aghal tedad country baraye har player
         int testCountry ;
         Random myRandom = new Random();
@@ -79,9 +79,10 @@ public class SoldierManager {
         {
             int CountryCount = 0 ; // tedad country haye har player
             
-            while( limit >= CountryCount )
+            while( limit > CountryCount )
             {
                 testCountry = myRandom.nextInt(42) ;
+                
                 if(CountryID[testCountry] == 0)//saheb nadasht
                 {
                     CountryID[testCountry] = i + 1 ;//player i+1 owner jadid mishavad
@@ -90,7 +91,7 @@ public class SoldierManager {
             }    
         }
 
-        for(int i =0 , j = 0; i < 42 ; i++)//peyda kardan owner country haye baghi monde
+        for(int i =0 ; i < 42 ; i++)//peyda kardan owner country haye baghi monde
         {
             if(CountryID[i] == 0)
             {
