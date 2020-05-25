@@ -8,6 +8,7 @@ public class Player {
     private PlayerColor PlayerColor ;
     private int CountriesCount ;
     private int UnimployedSoldiersCount ;
+    private int FirstRunUnimployedSoldiersCount ;
     private boolean IsActive ;
     private boolean Lost ;
     
@@ -44,6 +45,14 @@ public class Player {
 
     public void setUnimployedSoldiersCount(int UnimployedSoldiersCount) {
         this.UnimployedSoldiersCount = UnimployedSoldiersCount;
+    }
+
+    public void setFirstRunUnimployedSoldiersCount(int FirstRunUnimployedSoldiersCount) {
+        this.FirstRunUnimployedSoldiersCount = FirstRunUnimployedSoldiersCount;
+    }
+
+    public int getFirstRunUnimployedSoldiersCount() {
+        return FirstRunUnimployedSoldiersCount;
     }
 
     public void setIsActive(boolean IsActive) {

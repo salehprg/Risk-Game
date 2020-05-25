@@ -14,10 +14,11 @@ public class TurnManager {
     static Player CurrentPlayer;
     static PlayerManager playerManager;
     static GameManager gameManager;
-    
+    public static int RoundNumber = 1;
     
     static Country FirstCountrySelected , SecondCountrySelected;
 
+    public static boolean HasFirstRunSodlier = false;
     public TurnManager(List<Player> player , GameManager _gameManager)
     {
         playerManager = new PlayerManager(player);    
@@ -45,6 +46,19 @@ public class TurnManager {
 
         if(CurrentId + 1 > playerManager.getPlayerLastIndex())
         {
+            HasFirstRunSodlier = false;
+            for(int i = 0;i < PlayerManager.getPlayers().size();i++)
+            {
+                if(PlayerManager.getPlayer(i).getFirstRunUnimployedSoldiersCount() > 0)
+                {
+                    HasFirstRunSodlier = true;
+                }
+            }
+
+            if(!HasFirstRunSodlier)
+            {
+                RoundNumber++;
+            }
             CurrentPlayer = PlayerManager.getPlayer(0);
         }
         else
@@ -54,7 +68,10 @@ public class TurnManager {
 
         if(!CurrentPlayer.getIsLost())
         {
-            CurrentPlayer.setUnimployedSoldiersCount(4);
+            if(RoundNumber != 1)
+            {
+                SoldierManager.GiveSoldierToPlayer(CurrentPlayer );
+            }
             CurrentPlayer.setIsActive(true);  // New Player
 
             GameManager.ChangeState(State.DeploySoldier);

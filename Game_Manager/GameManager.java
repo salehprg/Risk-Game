@@ -39,13 +39,16 @@ public class GameManager {
 
         turnManager = new TurnManager(players  , this);
 
-        //SoldierManager.Initialize(PlayerNumbers);
         Map.Initialize();
-        turnManager.NextTurn();
-
+        SoldierManager.Initialize(PlayerNumbers);
+        TurnManager.HasFirstRunSodlier = true;
         uiManager.InitializeGame();
 
+        turnManager.NextTurn();
+
+
         GameData.UpdateGameInfo();
+        GameData.UpdateMapInfo();
     }
 
 
@@ -88,6 +91,14 @@ public class GameManager {
 
             switch (CurrentState) {
                 case DeploySoldier:
+                    boolean HasFirstRunSodlier = false;
+                    for(int i = 0;i < TurnManager.getPlayerList().size();i++)
+                    {
+                        if(TurnManager.getPlayerList().get(i).getFirstRunUnimployedSoldiersCount() > 0)
+                        {
+                            HasFirstRunSodlier = true;
+                        }
+                    }
                     
                     if(!PassData)
                     {
@@ -95,37 +106,52 @@ public class GameManager {
                         {
                             TurnManager.SetCountrySelected(_Country);
                         }
-
-                        if(TurnManager.CheckDeploy(_Country))
+                    }
+                    if(!HasFirstRunSodlier)
+                    {
+                        if(!PassData)
                         {
-                            InputModel dialogModel = new InputModel();
-                            dialogModel.DeploySoldier = TurnManager.getCurrentPlayer().getUnimployedSoldiersCount();
-                            uiManager.OpenSoldierInput_Dialog(dialogModel);
+
+                            if(TurnManager.CheckDeploy(_Country))
+                            {
+                                InputModel dialogModel = new InputModel();
+                                dialogModel.DeploySoldier = TurnManager.getCurrentPlayer().getUnimployedSoldiersCount();
+                                uiManager.OpenSoldierInput_Dialog(dialogModel);
+                            }
+                            else
+                            {
+                                System.out.println("Not Yours");
+                            }
                         }
                         else
                         {
-                            System.out.println("Not Yours");
+                            if(SoldierManager.DeploySoldier(dataModel.DeploySoldier , false))
+                            {
+                                if(TurnManager.getCurrentPlayer().getUnimployedSoldiersCount() <= 0)
+                                {
+                                    CurrentState = State.Move;
+                                    //turnManager.NextTurn();
+                                }
+                                
+                                TurnManager.ClearSelectedCountry();
+                            }
+                            else
+                            {
+                                InputModel dialogModel = new InputModel();
+                                dialogModel.DeploySoldier = TurnManager.getCurrentPlayer().getUnimployedSoldiersCount();
+                                uiManager.OpenSoldierInput_Dialog(dialogModel);
+                            }
+                            
                         }
                     }
                     else
                     {
-                        if(SoldierManager.DeploySoldier(dataModel.DeploySoldier))
+                        if(SoldierManager.DeploySoldier(1 , true))
                         {
-                            if(TurnManager.getCurrentPlayer().getUnimployedSoldiersCount() <= 0)
-                            {
-                                CurrentState = State.Move;
-                                //turnManager.NextTurn();
-                            }
-                            
+
+                            turnManager.NextTurn();
                             TurnManager.ClearSelectedCountry();
                         }
-                        else
-                        {
-                            InputModel dialogModel = new InputModel();
-                            dialogModel.DeploySoldier = TurnManager.getCurrentPlayer().getUnimployedSoldiersCount();
-                            uiManager.OpenSoldierInput_Dialog(dialogModel);
-                        }
-                        
                     }
 
                     break;

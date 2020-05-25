@@ -9,10 +9,10 @@ import Map.Map;
 
 public class SoldierManager {
 
-    public static void GiveSoldierToPlayer(Player _Player)
+    public static void GiveSoldierToPlayer(Player _Player )
     {
+
         _Player.setUnimployedSoldiersCount(SoldiersByContinent(_Player) + SoldiersByCountries(_Player));
-        
     }
 
     public static boolean MoveSoldier(int _SoldierToMove)
@@ -33,9 +33,9 @@ public class SoldierManager {
         }
     }
 
-    public static boolean DeploySoldier(int SoldierCount)
+    public static boolean DeploySoldier(int SoldierCount , boolean FirstRun)
     {
-        int UnEmployeedSoldier = TurnManager.getCurrentPlayer().getUnimployedSoldiersCount();
+        int UnEmployeedSoldier = (FirstRun ? TurnManager.getCurrentPlayer().getFirstRunUnimployedSoldiersCount() : TurnManager.getCurrentPlayer().getUnimployedSoldiersCount());
         Country ToCountry = TurnManager.getFirstCountrySelected();
 
         if(UnEmployeedSoldier >= SoldierCount && SoldierCount != 0)
@@ -44,7 +44,13 @@ public class SoldierManager {
             {
                 ToCountry.AddSoldier(SoldierCount);
                 ToCountry.SetOwnerId(TurnManager.CurrentPlayer.getPlayerID());
-                TurnManager.getCurrentPlayer().setUnimployedSoldiersCount(UnEmployeedSoldier - SoldierCount);
+                if(!FirstRun)
+                {
+                    TurnManager.getCurrentPlayer().setUnimployedSoldiersCount(UnEmployeedSoldier - SoldierCount);
+                }
+                else{
+                    TurnManager.getCurrentPlayer().setFirstRunUnimployedSoldiersCount(UnEmployeedSoldier - SoldierCount);
+                }
 
                 return true;
             }
@@ -138,6 +144,17 @@ public class SoldierManager {
                 }
             }
         }   
+
+        for(int i = 0;i < n;i++)
+        {
+            // PlayerManager.getPlayer(i).setFirstRunUnimployedSoldiersCount(remainingSoldierPlayer[i+1]);
+            PlayerManager.getPlayer(i).setFirstRunUnimployedSoldiersCount(1);
+        }
+        for(int i = 0; i < 42;i++)
+        {
+            Map.countries.get(i).SetOwnerId(CountryID[i] - 1);
+            Map.countries.get(i).SetSoldierCount(1);
+        }
     }
 
     static int SoldiersByCountries(Player _Player)
