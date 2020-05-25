@@ -47,7 +47,7 @@ IOException, LineUnavailableException
         // frame.setUndecorated(true);
         // frame.setVisible(true);
 
-        frame.setSize(800, 600);
+        frame.setSize(1000, 600);
         frame.setLocationRelativeTo(null);
         
         try
