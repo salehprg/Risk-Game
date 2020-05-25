@@ -39,7 +39,7 @@ public class UIManager {
     {
         try
         {
-            frame = uiCreator.InitializeMainMenu();
+            frame = uiCreator.InitializeStart();
         }
         catch(Exception ex)
         {
