@@ -37,17 +37,9 @@ public class GameManager {
 
     public static State CurrentState = State.DeploySoldier;
 
-    public void InitializeGame(int PlayerNumbers)
+    public void InitializeGame(int PlayerNumbers , List<Player> _players)
     {
-        List<Player> players = new ArrayList<Player>();
-        
-        Player player1 = new Player(0, "PlayerName", PlayerColor.Blue);
-        Player player2 = new Player(1, "Player2",  PlayerColor.Red);
-
-        player1.setUnimployedSoldiersCount(4);
-        player2.setUnimployedSoldiersCount(6);
-        players.add(player1);
-        players.add(player2);
+        List<Player> players = _players;
 
         turnManager = new TurnManager(players  , this);
 

@@ -48,6 +48,8 @@ public class UIManager {
         }
     }
 
+    public
+
     public void InitializeGame()
     {
         frame = uiCreator.InitializeMainGame();

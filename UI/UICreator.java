@@ -18,6 +18,7 @@ import Game_Manager.Turn.TurnManager;
 import Map.Country;
 import Map.Map;
 import PlayerManager.Player;
+import PlayerManager.PlayerManager.PlayerColor;
 
 import java.awt.*;
 
@@ -55,7 +56,7 @@ IOException, LineUnavailableException
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File(AppPath + "//Resource//StartMenu.snd").getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
             clip.open(audioIn);
-            clip.start();
+            //clip.start();
         }
         catch(IOException ex)
         {
@@ -94,6 +95,7 @@ IOException, LineUnavailableException
         return frame;
 
     }
+    
     public void ListPlayerCount(JFrame _frame)
     {
         int width = _frame.getWidth();
@@ -161,6 +163,8 @@ IOException, LineUnavailableException
 
     boolean Hitler = false, Churchil = false , Musilini = false , Stalin = false;
     ArrayList<Integer> PlayerCharId = new ArrayList<>();
+    ArrayList<JButton> Characters = new ArrayList<>();
+    ArrayList<JTextField> PlayerName = new ArrayList<>();
 
     public void PlayerListInfo(int PlayerNumber , JFrame _frame)
     {
@@ -174,7 +178,7 @@ IOException, LineUnavailableException
 
         JPanel InfoPanel = new JPanel();
         InfoPanel.setLayout(null);
-        InfoPanel.setBounds(0,0 , width, height);
+        InfoPanel.setBounds(40,40 , width, height);
 
         JLabel lblplayerCount = new JLabel("Player Count : " + String.valueOf(PlayerNumber));
         lblplayerCount.setBounds(30, 0, 100, 20);
@@ -183,11 +187,12 @@ IOException, LineUnavailableException
         for(int i = 0;i < PlayerNumber;i++)
         {
             JLabel lblPlayerName = new JLabel("Player Name : ");
-            lblPlayerName.setBounds(30, 20 + i * 30, 100, 20);
+            lblPlayerName.setBounds(30, 50 + i * 120, 100, 20);
             lblPlayerName.setForeground(Color.WHITE);
 
             JTextField textname = new JTextField();
-            textname.setBounds(140, 20 + i * 30 , 100, 20);
+            textname.setBounds(140, 50 + i * 120 , 100, 20);
+            PlayerName.add(textname);
 
             PlayerCharId.add(-1);
             CreateSelectableCharacter(InfoPanel, i , -1);
@@ -195,6 +200,47 @@ IOException, LineUnavailableException
             InfoPanel.add(lblPlayerName);
             InfoPanel.add(textname);
         }
+
+        JButton buttonOk = new JButton("Ok");
+        buttonOk.setBounds(30, 110, 60, 30);
+        //buttonOk.setBorderPainted(false);
+        buttonOk.setContentAreaFilled(false);
+        buttonOk.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        buttonOk.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+
+                        List<Player> players = new ArrayList<Player>();
+                        PlayerColor color = PlayerColor.Black;
+                        for(int i = 0; i < PlayerNumber;i++)
+                        {
+                            // 0 = Hitler , 1 = Musilini , 2 = Stalin , 3 = Churchil
+                            switch (PlayerCharId.get(i)) {
+                                case 0:
+                                    color = PlayerColor.Black;
+                                    break;
+                            
+                                case 1:
+                                    color = PlayerColor.Green;
+                                    break;
+
+                                case 2:
+                                    color = PlayerColor.Red;
+                                    break;
+
+                                case 3:
+                                    color = PlayerColor.Blue;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            Player player = new Player(i, PlayerName.get(i).getText(), color);
+                            players.add(player);
+                        }
+        
+                        gameManager.InitializeGame(PlayerNumber , players); 
+                    }  
+                });
 
         InfoPanel.setBackground(new Color(0,0,0,0));
 
@@ -207,15 +253,14 @@ IOException, LineUnavailableException
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
-    ArrayList<JButton> Characters = new ArrayList<>();
     
-
     void CreateSelectableCharacter(JPanel CharPanel , int PlayerId , int SelectedChar)
     {
         String AppPath = Data.GetAppPath();
         ImageIcon PlayerIconImage = new ImageIcon();
         
+        int StartX = 260 , verSpaceBetweenChar = 120 , horSpaceBetweenChar = 120;
+
         if(Characters.size() > 0)
         {
             for(int i = 0 ; i < Characters.size();i++)
@@ -243,7 +288,7 @@ IOException, LineUnavailableException
             HitlerBtn.setName("0");
 
             HitlerBtn.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(100, 100 ,java.awt.Image.SCALE_SMOOTH)));
-            HitlerBtn.setBounds(180, 20 + PlayerId * 120, 100, 100);
+            HitlerBtn.setBounds(StartX, 20 + PlayerId * verSpaceBetweenChar, 100, 100);
             
             CharPanel.add(HitlerBtn);
             HitlerBtn.addActionListener(new ActionListener(){
@@ -267,7 +312,7 @@ IOException, LineUnavailableException
             MusiliniBtn.setName("1");
 
             MusiliniBtn.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(100, 100 ,java.awt.Image.SCALE_SMOOTH)));
-            MusiliniBtn.setBounds(300, 20 + PlayerId * 120, 100, 100);
+            MusiliniBtn.setBounds(StartX + horSpaceBetweenChar,20 + PlayerId * verSpaceBetweenChar, 100, 100);
 
             CharPanel.add(MusiliniBtn);
 
@@ -292,7 +337,7 @@ IOException, LineUnavailableException
             StalinBtn.setName("2");
 
             StalinBtn.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(100, 100 ,java.awt.Image.SCALE_SMOOTH)));
-            StalinBtn.setBounds(420, 20 + PlayerId * 120, 100, 100);
+            StalinBtn.setBounds(StartX + 2*horSpaceBetweenChar,20 + PlayerId * verSpaceBetweenChar, 100, 100);
 
             CharPanel.add(StalinBtn);
 
@@ -318,7 +363,7 @@ IOException, LineUnavailableException
             ChurchilBtn.setName("3");
 
             ChurchilBtn.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(100, 100 ,java.awt.Image.SCALE_SMOOTH)));
-            ChurchilBtn.setBounds(540, 20 + PlayerId * 120, 100, 100);
+            ChurchilBtn.setBounds(StartX + 3*horSpaceBetweenChar,20 + PlayerId * verSpaceBetweenChar, 100, 100);
 
             CharPanel.add(ChurchilBtn);
 
