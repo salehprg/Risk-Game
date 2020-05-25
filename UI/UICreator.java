@@ -464,10 +464,25 @@ IOException, LineUnavailableException
         frame.add(FinishMyTurn());
         frame.add(TopPanel);
 
+        ImageIcon CloseButtonIcon = new ImageIcon(AppPath + "\\UI\\Images\\the final\\Close.png");
+        JButton CloseButton = new JButton();
+        CloseButton.setIcon(new ImageIcon(CloseButtonIcon.getImage().getScaledInstance(40, 40 ,java.awt.Image.SCALE_SMOOTH)));
+        CloseButton.setBounds(ScreenWidth - 60 , 0  , 40 , 40);
+        CloseButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        CloseButton.setContentAreaFilled(false);
+        CloseButton.setBorderPainted(false);
+        CloseButton.setLayout(null);
+        CloseButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                        System.exit(0);
+                    }
+                });
+        
         
         CreatePlayerUI(TopPanel);
         CreatePlayerCharacter(frame);
 
+        frame.add(CloseButton , 0);
         frame.getContentPane().add(panel);
 
         frame.add(BackgroundImage(ScreenWidth, ScreenHeight));
