@@ -82,9 +82,14 @@ public class GameManager {
             {
                 if(TurnManager.getFirstCountrySelected() != null) //It means FirstCountry selected before
                 {
-                    if(_Country.GetOwnerId() != TurnManager.getCurrentPlayer().getPlayerID() && _Country.GetOwnerId() != -1)
+                    if(_Country.GetOwnerId() == TurnManager.getCurrentPlayer().getPlayerID() && _Country.GetOwnerId() != -1)
                     {
-                        ChangeState(State.War);
+                        ChangeState(State.Move);
+                    }
+                    else if(_Country.GetOwnerId() != TurnManager.getCurrentPlayer().getPlayerID() && _Country.GetOwnerId() != -1)
+                    {
+                        if(CurrentState != State.Move)
+                            ChangeState(State.War);
                     }
                 }
             }
@@ -129,7 +134,7 @@ public class GameManager {
                             {
                                 if(TurnManager.getCurrentPlayer().getUnimployedSoldiersCount() <= 0)
                                 {
-                                    CurrentState = State.Move;
+                                    CurrentState = State.War;
                                     //turnManager.NextTurn();
                                 }
                                 
