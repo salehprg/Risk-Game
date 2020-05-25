@@ -5,6 +5,7 @@ public class Country
         int ownerID ;//بازیکن صاحب کشورID
         int SoldierCount ;//تعداد سرباز موجود در این کشور
         int CountryID ;//کشورID
+        String CountryName ;//کشورID
         int NeighborsID [];//کشور های مجاورID
         boolean Checked; //برای چک کردن راه ارتباطی
         boolean Selected; //چک کردن در حالت انتخاب یا نه
@@ -74,6 +75,16 @@ public class Country
         public void SetNeighborsID(int _NeighborsID[])
         {
             NeighborsID = _NeighborsID;
+        }
+
+        public void SetCountryName(String _CountryName)
+        {
+            CountryName = _CountryName;
+        }
+
+        public String GetCountryName()
+        {
+            return CountryName;
         }
                
     }

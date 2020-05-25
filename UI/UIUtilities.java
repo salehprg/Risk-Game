@@ -1,6 +1,8 @@
 package UI;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import java.awt.event.*;
 import java.awt.*;
@@ -37,8 +39,8 @@ public class UIUtilities {
         backgroundImage.setIcon(new ImageIcon(BoardGameIcon.getImage().getScaledInstance(dialog.getWidth(), dialog.getHeight() ,java.awt.Image.SCALE_SMOOTH)));
         backgroundImage.setBounds(0, 0, dialog.getWidth(), dialog.getHeight());
 
-        JLabel FromCountry = new JLabel("From " + String.valueOf(input.FirstCountry.GetCountryID()) + 
-                                        " To " + String.valueOf(input.SecondCountry.GetCountryID()));
+        JLabel FromCountry = new JLabel("From " + String.valueOf(input.FirstCountry.GetCountryName()) + 
+                                        " To " + String.valueOf(input.SecondCountry.GetCountryName()));
         FromCountry.setBounds(30, 30, 150, 20);
 
         JLabel Attackerlbl = new JLabel("Max Soldier Attacker : " + String.valueOf(input.AttackerSoldier));
@@ -116,8 +118,8 @@ public class UIUtilities {
         backgroundImage.setIcon(new ImageIcon(BoardGameIcon.getImage().getScaledInstance(dialog.getWidth(), dialog.getHeight() ,java.awt.Image.SCALE_SMOOTH)));
         backgroundImage.setBounds(0, 0, dialog.getWidth(), dialog.getHeight());
 
-        JLabel FromCountry = new JLabel("From " + String.valueOf(input.FirstCountry.GetCountryID()) + 
-                                        " To " + String.valueOf(input.SecondCountry.GetCountryID()));
+        JLabel FromCountry = new JLabel("From " + String.valueOf(input.FirstCountry.GetCountryName()) + 
+                                        " To " + String.valueOf(input.SecondCountry.GetCountryName()));
         FromCountry.setBounds(60, 50, 150, 20);
 
         JLabel Attackerlbl = new JLabel("Soldier Attacker : " + String.valueOf(input.AttackerSoldier));
@@ -252,7 +254,7 @@ public class UIUtilities {
         
         JFrame dialog = new JFrame();
         dialog.setUndecorated(true);
-        dialog.setSize(400, 250);
+        dialog.setSize(400, 200);
         dialog.setLocationRelativeTo(null);   //Center Screen
 
         ImageIcon BoardGameIcon = new ImageIcon(AppPath + "\\UI\\Images\\BoardGame\\Letter.png");
@@ -261,18 +263,18 @@ public class UIUtilities {
         backgroundImage.setIcon(new ImageIcon(BoardGameIcon.getImage().getScaledInstance(dialog.getWidth(), dialog.getHeight() ,java.awt.Image.SCALE_SMOOTH)));
         backgroundImage.setBounds(0, 0, dialog.getWidth(), dialog.getHeight());
 
-        JLabel FromCountry = new JLabel("From " + String.valueOf(input.FirstCountry.GetCountryID()) + 
-                                        " To " + String.valueOf(input.SecondCountry.GetCountryID()));
-        FromCountry.setBounds(30, 30, 150, 20);
+        JLabel FromCountry = new JLabel("From " + String.valueOf(input.FirstCountry.GetCountryName()) + 
+                                        " To " + String.valueOf(input.SecondCountry.GetCountryName()));
+        FromCountry.setBounds(50, 30, 300, 20);
 
         JLabel maxDeploy = new JLabel("Max Soldier To Move : " + String.valueOf(input.MoveSoldier));
-        maxDeploy.setBounds(30, 50, 200, 20);
+        maxDeploy.setBounds(50, 50, 200, 20);
 
         JTextField txtbox = new JTextField();
-        txtbox.setBounds(30, 80 , 100, 20);
+        txtbox.setBounds(50, 80 , 100, 20);
 
         JButton buttonOk = new JButton("Ok");
-        buttonOk.setBounds(30, 110, 60, 30);
+        buttonOk.setBounds(50, 110, 60, 30);
         //buttonOk.setBorderPainted(false);
         buttonOk.setContentAreaFilled(false);
         buttonOk.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -289,7 +291,7 @@ public class UIUtilities {
 
         
         JButton buttonClose = new JButton("X");
-        buttonClose.setBounds(100, 110, 60, 30);
+        buttonClose.setBounds(120, 110, 60, 30);
         //buttonClose.setBorderPainted(false);
         buttonClose.setContentAreaFilled(false);
         buttonClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

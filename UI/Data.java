@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import javax.imageio.IIOException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
@@ -21,6 +20,8 @@ public class Data {
         }
     }   
 
+    public static int RefrenceX = 800 , RefrenceY = 600;
+    public static int RefrenceTopPanelX = 720 , RefrenceTopPanelY = 80;
     public static List<JLabel> PlayerNameLabels = new ArrayList<JLabel>();
     public static List<JLabel> PlayerSoldierLabels = new ArrayList<JLabel>();
     public static List<JLabel> PlayerCountryCount = new ArrayList<JLabel>();

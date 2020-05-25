@@ -68,9 +68,11 @@ public class Map {
         for(int i = 0; i < CountryNames.length;i++)
         {
             String CurrentContinent = CountryNames[i].split("\\.")[0];
+            String CountryName = CountryNames[i].split("\\.")[1];
 
             Country NewCountry = new Country();
             NewCountry.CountryID = i;
+            NewCountry.SetCountryName(CountryName);
             NewCountry.SetOwnerId(-1);
             NewCountry.SetNeighborsID(Data.NeighbourId[(i * 2) + 1]);
 

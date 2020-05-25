@@ -25,6 +25,8 @@ public class UIManager {
     int result = -1;
     boolean Opened = false;
 
+    public static JLabel lblState;
+
     public UIManager()
     {
         GameManager _gameManager = new GameManager(this);
@@ -53,31 +55,37 @@ public class UIManager {
         switch(PlayerManager.getPlayer(_country.GetOwnerId()).getPlayerColor())
         {
             case Blue:
-                CountryIcon = new ImageIcon(AppPath + "\\UI\\Images\\Players\\Blue.png");
+                CountryIcon = new ImageIcon(AppPath + "\\UI\\Images\\Players\\armies\\blue_soldier.png");
                 break;
 
             case Red:
-                CountryIcon = new ImageIcon(AppPath + "\\UI\\Images\\Players\\Red.png");
+                CountryIcon = new ImageIcon(AppPath + "\\UI\\Images\\Players\\armies\\red_soldier.png");
+                break;
+
+            case Black:
+                CountryIcon = new ImageIcon(AppPath + "\\UI\\Images\\Players\\armies\\black_soldier.png");
                 break;
 
             case Green:
-                CountryIcon = new ImageIcon(AppPath + "\\UI\\Images\\Players\\Green.png");
-                break;
-
-            case Yellow:
-                CountryIcon = new ImageIcon(AppPath + "\\UI\\Images\\Players\\Yellow.png");
+                CountryIcon = new ImageIcon(AppPath + "\\UI\\Images\\Players\\armies\\green_soldier.png");
                 break;
         }
 
         CountryButton.removeAll();
         CountryButton.repaint();
 
-        CountryButton.setIcon(new ImageIcon(CountryIcon.getImage().getScaledInstance(CountryButton.getWidth() , CountryButton.getHeight() ,java.awt.Image.SCALE_SMOOTH)));
+        // CountryButton.setIcon(new ImageIcon(CountryIcon.getImage().getScaledInstance(25 , CountryButton.getHeight() + 5 ,java.awt.Image.SCALE_SMOOTH)));
+
+        JLabel playerImg = new JLabel(new ImageIcon(CountryIcon.getImage().getScaledInstance(30 , CountryButton.getHeight() + 10 ,java.awt.Image.SCALE_SMOOTH)));
+        playerImg.setLayout(null);
+        CountryButton.add(playerImg);
+
+        playerImg.setBounds(0, 0, 30, CountryButton.getHeight() + 10);
 
         JLabel SoldierCount = new JLabel(String.valueOf(_country.GetSoldierCount()));
         CountryButton.setLayout(null);
 
-        SoldierCount.setBounds((CountryButton.getWidth() - 12) / 2 , (CountryButton.getHeight() - 10) / 2 , 20, 10);
+        SoldierCount.setBounds((CountryButton.getWidth() - 10) / 2 , (CountryButton.getHeight() - 10) / 2 , 20, 10);
         SoldierCount.setLayout(null);
 
         CountryButton.add(SoldierCount , null);
@@ -110,9 +118,46 @@ public class UIManager {
                 playerUnEmSoldier.setText(String.valueOf(SelectedPlayer.getUnimployedSoldiersCount()));
                 playerCountrycount.setText(String.valueOf(SelectedPlayer.getCountriesCount()));
 
-                if(SelectedPlayer.GetIsActive())
+                if(SelectedPlayer.getPlayerID() == TurnManager.getCurrentPlayer().getPlayerID())
                 {
-                    playerName.setText(SelectedPlayer.getPlayerName() + "^" + GameManager.CurrentState);
+                    ImageIcon PlayerState = new ImageIcon();
+                    String AppPath = Data.GetAppPath();
+
+                    switch(GameManager.CurrentState)
+                    {
+                        case Move:
+                            PlayerState = new ImageIcon(AppPath + "\\UI\\Images\\the final\\Move.png");
+                            break;
+
+                        case War:
+                            PlayerState = new ImageIcon(AppPath + "\\UI\\Images\\the final\\War.png");
+                            break;
+
+                        case DeploySoldier:
+                            PlayerState = new ImageIcon(AppPath + "\\UI\\Images\\the final\\Deploy.png");
+                            break;
+                    }
+
+
+                    // PlayerState.setIcon(new ImageIcon(CountryIcon.getImage().getScaledInstance(25 , PlayerState.getHeight() + 5 ,java.awt.Image.SCALE_SMOOTH)));
+
+                    if(lblState == null)
+                    {
+                        JLabel playerImg = new JLabel();
+                        playerImg = new JLabel(new ImageIcon(PlayerState.getImage().getScaledInstance(20 , 30 ,java.awt.Image.SCALE_SMOOTH)));
+                        playerImg.setLayout(null);
+
+                        UICreator.lblTopPanel.add(playerImg , null);
+                        lblState = playerImg;
+                    }
+
+                    lblState.setBounds(0,0, 20, 30);
+                    lblState.setText(SelectedPlayer.getPlayerName() + "^");
+                    lblState.setIcon(new ImageIcon(PlayerState.getImage().getScaledInstance(20 , 30 ,java.awt.Image.SCALE_SMOOTH)));
+                    //lblState.setLocation(frame.getWidth() * (Data.PlayerNameLabels.get(i).getX() + Data.PlayerNameLabels.get(i).getWidth() + 5) / Data.RefrenceX, frame.getHeight() * (Data.PlayerNameLabels.get(i).getY() + 35) / Data.RefrenceY);
+                    lblState.setLocation(UICreator.lblTopPanel.getWidth() * (playerName.getX()) / Data.RefrenceTopPanelX, UICreator.lblTopPanel.getHeight() * (playerName.getY()) / Data.RefrenceTopPanelY);
+
+
                 }
                 else
                 {
@@ -146,6 +191,11 @@ public class UIManager {
     public void OpenSoldierInput_Dialog(InputModel input)
     {
         uiUtilities.OpenInputSoldierDeployDialog(input);
+    }
+
+    public void HandleStartGame()
+    {
+
     }
 
     public void SetDialogResult(InputModel data)

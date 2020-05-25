@@ -11,8 +11,8 @@ public class PlayerManager {
     {
         Red,
         Blue,
-        Green,
-        Yellow
+        Black,
+        Green
     }
     
     public PlayerManager(List<Player> _Players)
