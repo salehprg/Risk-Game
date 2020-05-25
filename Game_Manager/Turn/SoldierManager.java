@@ -147,8 +147,8 @@ public class SoldierManager {
 
         for(int i = 0;i < n;i++)
         {
-            // PlayerManager.getPlayer(i).setFirstRunUnimployedSoldiersCount(remainingSoldierPlayer[i+1]);
-            PlayerManager.getPlayer(i).setFirstRunUnimployedSoldiersCount(1);
+            PlayerManager.getPlayer(i).setFirstRunUnimployedSoldiersCount(remainingSoldierPlayer[i+1]);
+            //PlayerManager.getPlayer(i).setFirstRunUnimployedSoldiersCount(1);
         }
         for(int i = 0; i < 42;i++)
         {
