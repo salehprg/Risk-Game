@@ -159,8 +159,10 @@ IOException, LineUnavailableException
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    boolean Hitler , Churchil , Musilini , Stalin;
-    public void PlayerListInfo(int Number , JFrame _frame)
+    boolean Hitler = false, Churchil = false , Musilini = false , Stalin = false;
+    ArrayList<Integer> PlayerCharId = new ArrayList<>();
+
+    public void PlayerListInfo(int PlayerNumber , JFrame _frame)
     {
         int width = _frame.getWidth();
         int height = _frame.getHeight();
@@ -172,13 +174,13 @@ IOException, LineUnavailableException
 
         JPanel InfoPanel = new JPanel();
         InfoPanel.setLayout(null);
-        InfoPanel.setBounds((width - 400) / 2 , (height - 300) / 2 , 400, 300);
+        InfoPanel.setBounds(0,0 , width, height);
 
-        JLabel lblplayerCount = new JLabel("Player Count : " + String.valueOf(Number));
+        JLabel lblplayerCount = new JLabel("Player Count : " + String.valueOf(PlayerNumber));
         lblplayerCount.setBounds(30, 0, 100, 20);
         lblplayerCount.setForeground(Color.WHITE);
 
-        for(int i = 0;i < Number;i++)
+        for(int i = 0;i < PlayerNumber;i++)
         {
             JLabel lblPlayerName = new JLabel("Player Name : ");
             lblPlayerName.setBounds(30, 20 + i * 30, 100, 20);
@@ -187,7 +189,8 @@ IOException, LineUnavailableException
             JTextField textname = new JTextField();
             textname.setBounds(140, 20 + i * 30 , 100, 20);
 
-            CreateSelectableCharacter(InfoPanel, i);
+            PlayerCharId.add(-1);
+            CreateSelectableCharacter(InfoPanel, i , -1);
 
             InfoPanel.add(lblPlayerName);
             InfoPanel.add(textname);
@@ -205,44 +208,111 @@ IOException, LineUnavailableException
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    ArrayList<JButton> Characters;
-    void CreateSelectableCharacter(JPanel CharPanel , int playerId)
+    ArrayList<JButton> Characters = new ArrayList<>();
+    
+
+    void CreateSelectableCharacter(JPanel CharPanel , int PlayerId , int SelectedChar)
     {
         String AppPath = Data.GetAppPath();
         ImageIcon PlayerIconImage = new ImageIcon();
         
-        for(int i = 0;i< Characters.size();i++)
+        if(Characters.size() > 0)
         {
-            CharPanel.remove(Characters.get(i));
+            for(int i = 0 ; i < Characters.size();i++)
+            {
+                if(SelectedChar != -1)
+                {
+                    if(Characters.get(i).getActionCommand() == String.valueOf(SelectedChar))
+                    {
+                        CharPanel.remove(Characters.get(i));
+                    }
+                }
+            }
         }
 
-        if(!Hitler)
+        // 0 = Hitler , 1 = Musilini , 2 = Stalin , 3 = Churchil
+        if(!Hitler && PlayerCharId.get(PlayerId) == -1 || PlayerCharId.get(PlayerId) == 0)
         {
             PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\hitler.jpg");
-            JButton Hitler = new JButton();
-            Hitler.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(50, 50 ,java.awt.Image.SCALE_SMOOTH)));
-            Hitler.setBounds(180, 20 + playerId * 30, 50, 50);
-            CharPanel.add(Hitler);
-            Hitler.addActionListener(new ActionListener(){
+            JButton HitlerBtn = new JButton();
+            HitlerBtn.setActionCommand(String.valueOf(PlayerId));
+
+            HitlerBtn.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(100, 100 ,java.awt.Image.SCALE_SMOOTH)));
+            HitlerBtn.setBounds(180, 20 + PlayerId * 120, 100, 100);
+            
+            CharPanel.add(HitlerBtn);
+            HitlerBtn.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                            CreateSelectableCharacter(CharPanel, playerId);
+                            int _PlayerId = Integer.valueOf(e.getActionCommand());
+                            PlayerCharId.set(_PlayerId, 0);
+                            Hitler = true;
+                            CreateSelectableCharacter(CharPanel, _PlayerId , 0);
                         }
                     });
 
-            Characters.add(Hitler);
+            Characters.add(HitlerBtn);
         }
 
-        if(!Musilini)
+        if(!Musilini && PlayerCharId.get(PlayerId) == -1  || PlayerCharId.get(PlayerId) == 1)
         {
             PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\musilini.jpg");
-            JButton Musilini = new JButton();
-            Musilini.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(50, 50 ,java.awt.Image.SCALE_SMOOTH)));
-            Musilini.setBounds(180, 20 + playerId * 30, 50, 50);
-            CharPanel.add(Musilini);
+            JButton MusiliniBtn = new JButton();
+            MusiliniBtn.setActionCommand(String.valueOf(PlayerId));
+            MusiliniBtn.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(100, 100 ,java.awt.Image.SCALE_SMOOTH)));
+            MusiliniBtn.setBounds(300, 20 + PlayerId * 120, 100, 100);
+
+            CharPanel.add(MusiliniBtn);
+
+            MusiliniBtn.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                            CreateSelectableCharacter(CharPanel, Integer.valueOf(e.getActionCommand()) , 1);
+                        }
+                    });
+
+            Characters.add(MusiliniBtn);
         }
 
-        PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\stalin.jpg");
-        PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\churchil.jpg");
+        if(!Stalin && PlayerCharId.get(PlayerId) == -1  || PlayerCharId.get(PlayerId) == 2)
+        {
+            PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\stalin.jpg");
+            JButton StalinBtn = new JButton();
+            StalinBtn.setActionCommand(String.valueOf(PlayerId));
+            StalinBtn.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(100, 100 ,java.awt.Image.SCALE_SMOOTH)));
+            StalinBtn.setBounds(420, 20 + PlayerId * 120, 100, 100);
+
+            CharPanel.add(StalinBtn);
+
+            StalinBtn.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                            CreateSelectableCharacter(CharPanel, Integer.valueOf(e.getActionCommand()) , 2);
+                        }
+                    });
+
+            Characters.add(StalinBtn);
+        }
+
+        if(!Churchil && PlayerCharId.get(PlayerId) == -1  || PlayerCharId.get(PlayerId) == 3)
+        {
+            PlayerIconImage = new ImageIcon(AppPath + "\\UI\\Images\\the final\\churchil.jpg");
+            JButton ChurchilBtn = new JButton();
+            ChurchilBtn.setActionCommand(String.valueOf(PlayerId));
+            ChurchilBtn.setIcon(new ImageIcon(PlayerIconImage.getImage().getScaledInstance(100, 100 ,java.awt.Image.SCALE_SMOOTH)));
+            ChurchilBtn.setBounds(540, 20 + PlayerId * 120, 100, 100);
+
+            CharPanel.add(ChurchilBtn);
+
+            ChurchilBtn.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                            CreateSelectableCharacter(CharPanel, Integer.valueOf(e.getActionCommand()) , 3);
+                        }
+                    });
+
+            Characters.add(ChurchilBtn);
+        }
+
+        CharPanel.repaint();
+        CharPanel.setVisible(false);
+        CharPanel.setVisible(true);
     }
 
 //#endregion
