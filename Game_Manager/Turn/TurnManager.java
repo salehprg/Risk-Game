@@ -2,16 +2,13 @@ package Game_Manager.Turn;
 
 import java.util.List;
 
-import javax.swing.JLabel;
-
 import Game_Manager.GameManager;
 import Game_Manager.GameManager.State;
 import Game_Manager.Game_Data.GameData;
 import Map.Country;
-import Map.Map;
+
 import PlayerManager.*;
-import UI.Data;
-import UI.UIManager;
+
 
 public class TurnManager {
     static Player CurrentPlayer;

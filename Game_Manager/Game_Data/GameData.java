@@ -1,11 +1,8 @@
 package Game_Manager.Game_Data;
 
 import Game_Manager.Turn.TurnManager;
-import Map.Country;
 import Map.Map;
-import PlayerManager.Player;
 import PlayerManager.PlayerManager;
-import UI.Data;
 import UI.UIManager;
 
 public class GameData {

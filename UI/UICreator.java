@@ -3,14 +3,12 @@ package UI;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.MouseInputAdapter;
 
 import Game_Manager.GameManager;

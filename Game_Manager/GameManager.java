@@ -1,7 +1,5 @@
 package Game_Manager;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import Game_Manager.Game_Data.GameData;
@@ -9,10 +7,8 @@ import Game_Manager.Turn.*;
 import Map.Country;
 import Map.Map;
 import PlayerManager.Player;
-import PlayerManager.PlayerManager.PlayerColor;
 import UI.InputModel;
 import UI.UIManager;
-import UI.UIUtilities;
 
 public class GameManager {
 
