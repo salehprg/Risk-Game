@@ -37,6 +37,63 @@ public class UICreator {
 
 
 //#region MainMenu
+Clip clip;
+public JFrame InitializeStart() throws UnsupportedAudioFileException, 
+IOException, LineUnavailableException
+    {
+        JFrame frame = new JFrame("Risk Game");
+
+        // frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // frame.setUndecorated(true);
+        // frame.setVisible(true);
+
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        
+        try
+        {
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File(AppPath + "//Resource//stater_beat.snd").getAbsoluteFile());
+            clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+        }
+        catch(IOException ex)
+        {
+            System.out.println("Error with playing sound."); 
+            ex.printStackTrace();
+        }
+
+        int ScreenWidth = frame.getBounds().width;
+        int ScreenHeight = frame.getBounds().height;
+
+        JButton bg = new JButton();
+        bg = StartGameBGImage(ScreenWidth, ScreenHeight);
+
+        bg.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                try
+                {
+                    clip.stop();
+                    InitializeMainMenu();
+                    frame.setVisible(false);
+                }
+                catch(Exception ex)
+                {
+                    System.out.println("Error with playing sound."); 
+                    ex.printStackTrace(); 
+                }
+            }
+        });
+
+        frame.getContentPane().add(bg);
+        frame.add(StartGameBGImage(ScreenWidth, ScreenHeight));
+        frame.setLayout(null);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        return frame;
+
+    }
 
 public JFrame InitializeMainMenu() throws UnsupportedAudioFileException, 
 IOException, LineUnavailableException
@@ -67,7 +124,7 @@ IOException, LineUnavailableException
 
         ImageIcon startbtnIcon = new ImageIcon(AppPath + "\\UI\\Images\\the final\\start-normal.png");
         JButton startbtn = new JButton(new ImageIcon(startbtnIcon.getImage().getScaledInstance(250, 100 ,java.awt.Image.SCALE_SMOOTH)));
-        startbtn.setBounds((ScreenWidth - 300) / 2, ScreenHeight - 100, 250, 100);
+        startbtn.setBounds((ScreenWidth - 300) / 2, ScreenHeight - 120, 250, 100);
         startbtn.setRolloverEnabled(true);
 
         ImageIcon startbtnIconHover = new ImageIcon(AppPath + "\\UI\\Images\\the final\\start-hover.png");
@@ -567,6 +624,18 @@ IOException, LineUnavailableException
             parent.add(playerName , null);
             parent.add(UnEmpSoldierCount , null);
         }
+    }
+
+    JButton StartGameBGImage(int Width , int Height)
+    {
+        ImageIcon BackGroundIcon = new ImageIcon(AppPath + "\\UI\\Images\\the final\\starter.gif");
+        JButton BackGround = new JButton();
+        BackGround.setIcon(new ImageIcon(BackGroundIcon.getImage().getScaledInstance(Width, Height ,java.awt.Image.SCALE_DEFAULT)));
+        BackGroundIcon.setImageObserver(BackGround);
+        BackGround.setBounds(0, 0, Width , Height);
+        BackGround.setLayout(null);
+
+        return BackGround;
     }
 
     JLabel StartMenuBGImage(int Width , int Height)
